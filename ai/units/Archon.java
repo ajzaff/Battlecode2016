@@ -5,38 +5,34 @@ import static battlecode.common.RobotType.*;
 import static battlecode.common.MapLocation.getAllMapLocationsWithinRadiusSq;
 
 import battlecode.common.*;
+import team137.ai.actions.archon.ClearAction;
+import team137.ai.actions.priority.Priority;
+import team137.ai.actions.priority.units.ArchonPriorityMap;
 
 import java.util.Random;
 
 public class Archon extends BaseUnit {
 
+  private final ArchonPriorityMap priorityMap;
   private final Team team;
   private final Random rand;
+
   public Archon(RobotController rc) {
     super(rc);
+    priorityMap = new ArchonPriorityMap();
     team = rc.getTeam();
     rand = new Random(rc.getID());
   }
 
   @Override
   public boolean update() {
+
     MapLocation curLoc = rc.getLocation();
+
+    checkClearRubble(curLoc);
+    checkParts(curLoc);
+
     MapLocation[] neighbors = getAllMapLocationsWithinRadiusSq(curLoc, ARCHON.sensorRadiusSquared);
-
-    double curRubble = rc.senseRubble(curLoc);
-
-    if(curRubble > 100) {
-      if(safeClearRubble(OMNI)) {
-        return true;
-      }
-    }
-
-    double curParts = rc.senseParts(curLoc);
-
-    // max parts
-    MapLocation maxPartsLoc = curLoc;
-    Direction maxPartsDir = OMNI;
-    double maxParts = 0;
 
     // min rubble
     MapLocation minAdjacentRubbleLoc = curLoc;
@@ -104,6 +100,7 @@ public class Archon extends BaseUnit {
       }
     }
 
+    // debug
     rc.setIndicatorString(0, "partsL: "+ maxPartsLoc);
     rc.setIndicatorString(1, "neutralL: "+neutralLoc);
     rc.setIndicatorString(2, "rubbleL: "+minAdjacentRubbleLoc);
@@ -135,20 +132,25 @@ public class Archon extends BaseUnit {
     return false;
   }
 
-  public void pathMaximumParts(double[] actionPriorities) {
+  public void checkClearRubble(MapLocation curLoc) {
+    double curRubble = rc.senseRubble(curLoc);
 
+    // see if we are stuck!
+    if(curRubble > 100) {
+      priorityMap.putPriority(ClearAction.OMNI, Priority.LEVEL2_PRIORITY);
+    }
   }
 
-  public boolean safeActivate(MapLocation loc) {
-    try {
-      if(rc.isCoreReady() && rc.getLocation().isAdjacentTo(loc)) {
-        rc.activate(loc);
-        return true;
-      }
-    }
-    catch(GameActionException e) {
-      e.printStackTrace();
-    }
-    return false;
+  public void checkParts(MapLocation curLoc) {
+    double curParts = rc.senseParts(curLoc);
+
+    // max parts
+    MapLocation maxPartsLoc = curLoc;
+    Direction maxPartsDir = OMNI;
+    double maxParts = 0;
+  }
+
+  public void checkPath() {
+
   }
 }

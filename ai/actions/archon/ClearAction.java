@@ -8,6 +8,7 @@ import team137.ai.actions.BaseAction;
 
 public final class ClearAction extends BaseAction {
 
+  public static final ClearAction OMNI = new ClearAction(Direction.OMNI);
   public static final ClearAction NORTH = new ClearAction(Direction.NORTH);
   public static final ClearAction NORTH_EAST = new ClearAction(Direction.NORTH_EAST);
   public static final ClearAction EAST = new ClearAction(Direction.EAST);
@@ -30,8 +31,7 @@ public final class ClearAction extends BaseAction {
 
   public boolean safeClearRubble(RobotController rc) {
     try {
-      MapLocation clearLoc = rc.getLocation().add(dir);
-      if(rc.isCoreReady() && rc.onTheMap(clearLoc)) {
+      if(rc.isCoreReady() && rc.onTheMap(rc.getLocation().add(dir))) {
         rc.clearRubble(dir);
         return true;
       }
