@@ -1,7 +1,7 @@
 package team137;
 
 import battlecode.common.RobotController;
-import team137.units.*;
+import team137.ai.units.*;
 
 @SuppressWarnings("unused")
 public final class RobotPlayer {

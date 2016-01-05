@@ -1,4 +1,4 @@
-package team137.units;
+package team137.ai.units;
 
 import battlecode.common.RobotController;
 
@@ -8,7 +8,7 @@ public class Guard extends BaseUnit {
   }
 
   @Override
-  public void update() {
-
+  public boolean update() {
+    return false;
   }
 }
