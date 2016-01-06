@@ -18,6 +18,9 @@ public class Soldier extends BaseUnit {
 
   @Override
   public void update() {
+
+    rc.setIndicatorString(0, priorityMap.toString(7));
+
     priorityMap.fairAct(rc, rand);
     priorityMap.update();
   }

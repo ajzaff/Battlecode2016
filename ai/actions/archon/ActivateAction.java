@@ -69,7 +69,8 @@ public class ActivateAction extends BaseAction {
     else if(dir == Direction.NORTH_WEST) {
       return ActivateAction.NORTH_WEST;
     }
-    return null;
+    throw new IllegalArgumentException(
+        "cannot activate your own location");
   }
 
   @Override

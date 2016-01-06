@@ -4,18 +4,15 @@ import battlecode.common.Direction;
 import battlecode.common.RobotController;
 import team137.ai.actions.Action;
 import team137.ai.actions.MoveAction;
-import team137.ai.actions.priority.ActionPriorityMap;
+import team137.collect.PriorityMap;
 import team137.ai.actions.priority.Priority;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-public class DefaultPriorityMap extends ActionPriorityMap {
+public class DefaultPriorityMap extends PriorityMap {
 
-  protected DefaultPriorityMap(int initialCapacity) {
-    super(initialCapacity);
+  protected DefaultPriorityMap(int requiredCapacity) {
+    super(9 + requiredCapacity);
     init();
   }
 
@@ -57,28 +54,25 @@ public class DefaultPriorityMap extends ActionPriorityMap {
   }
 
   public void fairAct(RobotController rc, Random rand) {
-//    List<Action> choices = new ArrayList<>();
-//    double bestPriority = peek().getValue();
-//
-//    // select all equal likely possibilities
-//    for(Map.Entry<Action, Double> entry : getPriorityQueue()) {
-//      if(entry.getValue() < bestPriority) {
-//        break;
-//      }
-//      choices.add(entry.getKey());
-//    }
-//
-//    Action action = choices.get(rand.nextInt(choices.size()));
+    List<Action> bestChoices = new ArrayList<>();
+    Map.Entry<Action, Double> bestEntry = peek();
 
-    // do the best thing first!
-    Action action = peek().getKey();
-    action.act(rc);
+    // select all equal likely possibilities
+    Map.Entry<Action, Double> equalEntry;
+    while((equalEntry = getPrioritySet().ceiling(bestEntry)) != null) {
+      bestChoices.add(equalEntry.getKey());
+    }
+
+    if(! bestChoices.isEmpty()) {
+      int size = bestChoices.size();
+      Action action = bestChoices.get(rand.nextInt(size));
+      action.act(rc);
+    }
 
     // calculate new priority "decay" for fairness
-    putPriority(action, decay(action));
+//    putPriority(action, decay(action));
   }
 
-  @Override
   public void update() {
     // decay all actions!
     // ------------------------------------------------
@@ -86,13 +80,13 @@ public class DefaultPriorityMap extends ActionPriorityMap {
     // Due to the assumption of a linear decay function
     // the order in the priority queue will not change.
     // ------------------------------------------------
-    for(Map.Entry<Action, Double> entry : getPriorityIndex().values()) {
-      entry.setValue(decay(entry.getKey()));
+    for(Action action : getPriorityIndex().keySet()) {
+      Map.Entry<Action, Double> entry = getPriorityIndex().get(action);
+      entry.setValue(decay(entry.getValue()));
     }
   }
 
   protected double decay(Action action) {
-    // important: decay must be linear!
     return decay(getPriority(action));
   }
 

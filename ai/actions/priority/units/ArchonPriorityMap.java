@@ -6,8 +6,9 @@ import team137.ai.actions.archon.ClearAction;
 import team137.ai.actions.priority.Priority;
 
 public class ArchonPriorityMap extends DefaultPriorityMap {
+
   public ArchonPriorityMap() {
-    super(25);
+    super(16);
     init();
   }
 
@@ -37,26 +38,32 @@ public class ArchonPriorityMap extends DefaultPriorityMap {
   }
 
   public void addActivatePriority(Direction dir, Priority priority) {
-    addPriority(ActivateAction.fromDirection(dir), priority);
+    if(dir != Direction.OMNI && dir != Direction.NONE) {
+      addPriority(ActivateAction.fromDirection(dir), priority);
+    }
   }
 
   public void clearActivatePriority(Direction dir) {
-    putPriority(ActivateAction.fromDirection(dir), Priority.LOWEST_PRIORITY);
-  }
-
-  public void clearActivatePriority() {
-    for(Direction dir : Direction.values()) {
+    if(dir != Direction.OMNI && dir != Direction.NONE) {
       putPriority(ActivateAction.fromDirection(dir), Priority.LOWEST_PRIORITY);
     }
   }
 
+  public void clearActivatePriority() {
+    for(Direction dir : Direction.values()) {
+      clearActivatePriority(dir);
+    }
+  }
+
   public void forbidActivate(Direction dir) {
-    putPriority(ActivateAction.fromDirection(dir), Priority.FORBID_PRIORITY);
+    if(dir != Direction.OMNI && dir != Direction.NONE) {
+      putPriority(ActivateAction.fromDirection(dir), Priority.FORBID_PRIORITY);
+    }
   }
 
   public void forbidActivate() {
     for(Direction dir : Direction.values()) {
-      putPriority(ActivateAction.fromDirection(dir), Priority.FORBID_PRIORITY);
+      forbidActivate(dir);
     }
   }
 }
