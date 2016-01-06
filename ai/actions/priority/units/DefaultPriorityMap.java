@@ -53,12 +53,28 @@ public class DefaultPriorityMap extends PriorityMap {
     }
   }
 
-  public void fairAct(RobotController rc) {
-    Action action = peek().getKey();
-    action.act(rc);
+  public void fairAct(RobotController rc, Random rand) {
+    List<Action> bestActions = new ArrayList<>(size());
+    Entry bestEntry = peek();
 
-    // calculate new priority "decay" for fairness
-    putPriority(action, decay(action));
+    for(Entry entry : getPrioritySet().descendingSet()) {
+      if(entry.getValue().equals(bestEntry.getValue())) {
+        bestActions.add(entry.getKey());
+      }
+      else {
+        break;
+      }
+    }
+
+    if(! bestActions.isEmpty()) {
+      int n = bestActions.size();
+      Action action = bestActions.get(rand.nextInt(n));
+      action.act(rc);
+
+      // calculate new priority "decay" for fairness
+      putPriority(action, decay(action));
+    }
+
   }
 
   public void update() {
@@ -80,6 +96,6 @@ public class DefaultPriorityMap extends PriorityMap {
 
   protected double decay(double priority) {
     // important: decay must be linear!
-    return Math.max(Priority.LOWEST_PRIORITY.value, .9 * priority - .1);
+    return Math.max(Priority.LOWEST_PRIORITY.value, .9 * priority - .01);
   }
 }

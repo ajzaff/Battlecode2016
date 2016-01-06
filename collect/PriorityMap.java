@@ -36,11 +36,8 @@ public abstract class PriorityMap {
     @Override
     public int compareTo(Entry o) {
       int cmp = getValue().compareTo(o.getValue());
-      if(cmp == 0) {
-        cmp = hashCode() < o.hashCode()? 1 :
-            hashCode() > o.hashCode()? -1 : 0;
-      }
-      return cmp;
+      return cmp != 0? cmp : hashCode() < o.hashCode()? 1 :
+          hashCode() > o.hashCode()? -1 : 0;
     }
     @Override
     public String toString() {
@@ -100,6 +97,13 @@ public abstract class PriorityMap {
 
   protected Entry peek() {
     return getPrioritySet().last();
+  }
+
+  protected Double peekValue() {
+    if(isEmpty()) {
+      return Priority.FORBID_PRIORITY.value;
+    }
+    return peek().getValue();
   }
 
   public String toString(int n) {
