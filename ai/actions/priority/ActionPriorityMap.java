@@ -10,8 +10,8 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
       new Comparator<Map.Entry<Action, Double>>() {
         @Override
         public int compare(Map.Entry<Action, Double> o1, Map.Entry<Action, Double> o2) {
-          return o1.getValue() > o2.getValue()? 1 :
-              o1.getValue() < o2.getValue()? -1 : 0;
+          return o1.getValue() < o2.getValue()? 1 :
+              o1.getValue() > o2.getValue()? -1 : 0;
         }
       };
 
@@ -21,11 +21,6 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
   protected ActionPriorityMap(int initialCapacity) {
     priorityMap = new HashMap<>(initialCapacity);
     priorityList = new ArrayList<>(initialCapacity);
-  }
-
-  protected ActionPriorityMap() {
-    priorityMap = new HashMap<>();
-    priorityList = new ArrayList<>();
   }
 
   public int size() {
@@ -47,12 +42,24 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
   @Override
   public void putPriority(Action action, double priority) {
     getPriorityMap().put(action, priority);
-    getPriorityList().add(new HashMap.SimpleEntry<>(action, priority));
-    resort();
+    putPriorityList(action, priority);
+    sort();
   }
 
   public void putPriority(Action action, Priority priority) {
     putPriority(action, priority.value);
+  }
+
+  protected void putPriorityList(Action action, double priority) {
+    for(Map.Entry<Action, Double> e : getPriorityList()) {
+      if(e.getKey() == action) {
+        e.setValue(priority);
+        return;
+      }
+    }
+    Map.Entry<Action, Double> entry =
+        new HashMap.SimpleEntry<>(action, priority);
+    getPriorityList().add(entry);
   }
 
   @Override
@@ -67,7 +74,7 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
     return getPriorityList().get(0);
   }
 
-  protected void resort() {
+  protected void sort() {
     getPriorityList().sort(getComparator());
   }
 
@@ -77,6 +84,12 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
 
   @Override
   public String toString() {
-    return Arrays.toString(getPriorityList().toArray());
+    return toString(size());
   }
+
+  public String toString(int n) {
+    return "(" + getPriorityList().size() + ") " +
+        Arrays.toString(getPriorityList().subList(0, n).toArray());
+  }
+
 }

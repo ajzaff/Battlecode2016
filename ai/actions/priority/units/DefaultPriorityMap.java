@@ -18,11 +18,6 @@ public class DefaultPriorityMap extends ActionPriorityMap {
     init();
   }
 
-  protected DefaultPriorityMap() {
-    super();
-    init();
-  }
-
   protected void init() {
     // put 9 movement actions.
     putPriority(MoveAction.OMNI, Priority.DEFAULT_PRIORITY);
@@ -52,7 +47,7 @@ public class DefaultPriorityMap extends ActionPriorityMap {
     action.act(rc);
 
     // calculate new priority
-    double newPriority = Math.min(0, getPriority(action) - 1);
+    double newPriority = decay(action);
     putPriority(action, newPriority);
   }
 
@@ -60,8 +55,12 @@ public class DefaultPriorityMap extends ActionPriorityMap {
   public void update() {
     // decay all actions
     for(Action action : getPriorityMap().keySet()) {
-      double decay = Math.max(.9 * getPriority(action) - .1, 1);
+      double decay = decay(action);
       putPriority(action, decay);
     }
+  }
+
+  protected double decay(Action action) {
+    return Math.max(Priority.LOWEST_PRIORITY.value, .9 * getPriority(action) - .1);
   }
 }

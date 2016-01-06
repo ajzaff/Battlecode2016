@@ -26,7 +26,7 @@ public class Archon extends BaseUnit {
   }
 
   @Override
-  public boolean update() {
+  public void update() {
 
     MapLocation curLoc = rc.getLocation();
 
@@ -119,10 +119,12 @@ public class Archon extends BaseUnit {
 //      }
 //    }
 
-    rc.setIndicatorString(0, priorityMap.toString());
+    priorityMap.putPriority(MoveAction.EAST, Priority.HIGHEST_PRIORITY);
+    rc.setIndicatorString(0, priorityMap.toString(3));
 
+
+    priorityMap.fairAct(rc, rand);
     priorityMap.update();
-    return true;
   }
 
   public void checkClearRubble(MapLocation curLoc) {
@@ -130,7 +132,7 @@ public class Archon extends BaseUnit {
 
     // see if we are stuck!
     if(curRubble > 100) {
-      priorityMap.putPriority(ClearAction.OMNI, Priority.LEVEL2_PRIORITY);
+      // TODO: send distress signal
     }
   }
 
@@ -163,7 +165,7 @@ public class Archon extends BaseUnit {
         Direction dirFromLoc = curLoc.directionTo(loc).opposite();
         MoveAction action = MoveAction.fromDirection(dirFromLoc);
         double priority = priorityMap.getPriority(action);
-        priority += Priority.DEFAULT_PRIORITY.value;
+        priority += Priority.LOWEST_PRIORITY.value;
         priorityMap.putPriority(action, priority);
       }
     }

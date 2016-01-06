@@ -8,7 +8,6 @@ import team137.ai.actions.BaseAction;
 
 public final class ClearAction extends BaseAction {
 
-  public static final ClearAction OMNI = new ClearAction(Direction.OMNI, "X");
   public static final ClearAction NORTH = new ClearAction(Direction.NORTH, "Xn");
   public static final ClearAction NORTH_EAST = new ClearAction(Direction.NORTH_EAST, "Xne");
   public static final ClearAction EAST = new ClearAction(Direction.EAST, "Xe");

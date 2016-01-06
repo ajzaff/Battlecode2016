@@ -5,7 +5,7 @@ import team137.ai.actions.priority.Priority;
 
 public class ArchonPriorityMap extends DefaultPriorityMap {
   public ArchonPriorityMap() {
-    super(18);
+    super(17);
     init();
   }
 
@@ -13,8 +13,7 @@ public class ArchonPriorityMap extends DefaultPriorityMap {
   protected void init() {
     super.init();
 
-    // 9 clear rubble actions
-    putPriority(ClearAction.OMNI, Priority.DEFAULT_PRIORITY);
+    // 8 clear rubble actions
     putPriority(ClearAction.NORTH, Priority.DEFAULT_PRIORITY);
     putPriority(ClearAction.NORTH_EAST, Priority.DEFAULT_PRIORITY);
     putPriority(ClearAction.EAST, Priority.DEFAULT_PRIORITY);
