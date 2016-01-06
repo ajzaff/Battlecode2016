@@ -57,8 +57,10 @@ public class DefaultPriorityMap extends PriorityMap {
     List<Action> bestActions = new ArrayList<>(size());
     Entry bestEntry = peek();
 
-    for(Entry entry : getPrioritySet().descendingSet()) {
-      if(entry.getValue().equals(bestEntry.getValue())) {
+    NavigableSet<Entry> descendingSet = getPrioritySet().descendingSet();
+    for(Entry entry : descendingSet) {
+      Double entryValue = entry.getValue();
+      if(entryValue > Priority.FORBID_PRIORITY.value && entryValue.equals(bestEntry.getValue())) {
         bestActions.add(entry.getKey());
       }
       else {
@@ -74,7 +76,6 @@ public class DefaultPriorityMap extends PriorityMap {
       // calculate new priority "decay" for fairness
       putPriority(action, decay(action));
     }
-
   }
 
   public void update() {

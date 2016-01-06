@@ -17,24 +17,24 @@ public class ArchonPriorityMap extends DefaultPriorityMap {
     super.init();
 
     // 8 clear rubble actions
-    putPriority(ClearAction.NORTH, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.NORTH_EAST, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.EAST, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.SOUTH_EAST, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.SOUTH, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.SOUTH_WEST, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.WEST, Priority.FORBID_PRIORITY);
-    putPriority(ClearAction.NORTH_WEST, Priority.FORBID_PRIORITY);
-
-    // 8 activate neutral actions
-    putPriority(ActivateAction.NORTH, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.NORTH_EAST, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.EAST, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.SOUTH_EAST, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.SOUTH, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.SOUTH_WEST, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.WEST, Priority.FORBID_PRIORITY);
-    putPriority(ActivateAction.NORTH_WEST, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.NORTH, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.NORTH_EAST, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.EAST, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.SOUTH_EAST, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.SOUTH, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.SOUTH_WEST, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.WEST, Priority.FORBID_PRIORITY);
+//    putPriority(ClearAction.NORTH_WEST, Priority.FORBID_PRIORITY);
+//
+//    // 8 activate neutral actions
+//    putPriority(ActivateAction.NORTH, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.NORTH_EAST, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.EAST, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.SOUTH_EAST, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.SOUTH, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.SOUTH_WEST, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.WEST, Priority.FORBID_PRIORITY);
+//    putPriority(ActivateAction.NORTH_WEST, Priority.FORBID_PRIORITY);
   }
 
   public void addActivatePriority(Direction dir, Priority priority) {
