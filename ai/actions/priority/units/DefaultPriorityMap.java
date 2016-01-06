@@ -1,5 +1,6 @@
 package team137.ai.actions.priority.units;
 
+import battlecode.common.Direction;
 import battlecode.common.RobotController;
 import team137.ai.actions.Action;
 import team137.ai.actions.MoveAction;
@@ -31,6 +32,30 @@ public class DefaultPriorityMap extends ActionPriorityMap {
     putPriority(MoveAction.NORTH_WEST, Priority.DEFAULT_PRIORITY);
   }
 
+  public void addMovePriority(Direction dir, Priority priority) {
+    addPriority(MoveAction.fromDirection(dir), priority);
+  }
+
+  public void clearMovePriority(Direction dir) {
+    putPriority(MoveAction.fromDirection(dir), Priority.LOWEST_PRIORITY);
+  }
+
+  public void forbidMovePriority(Direction dir) {
+    putPriority(MoveAction.fromDirection(dir), Priority.FORBID_PRIORITY);
+  }
+
+  public void forbidMove() {
+    for(Direction dir : Direction.values()) {
+      forbidMovePriority(dir);
+    }
+  }
+
+  public void clearMovePriority() {
+    for(Direction dir : Direction.values()) {
+      clearMovePriority(dir);
+    }
+  }
+
   public void fairAct(RobotController rc, Random rand) {
     List<Action> choices = new ArrayList<>();
     double bestPriority = peek().getValue();
@@ -46,17 +71,15 @@ public class DefaultPriorityMap extends ActionPriorityMap {
     Action action = choices.get(rand.nextInt(choices.size()));
     action.act(rc);
 
-    // calculate new priority
-    double newPriority = decay(action);
-    putPriority(action, newPriority);
+    // calculate new priority "decay" for fairness
+    putPriority(action, decay(action));
   }
 
   @Override
   public void update() {
     // decay all actions
     for(Action action : getPriorityMap().keySet()) {
-      double decay = decay(action);
-      putPriority(action, decay);
+      putPriority(action, decay(action));
     }
   }
 

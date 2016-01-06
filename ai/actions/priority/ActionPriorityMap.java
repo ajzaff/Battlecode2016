@@ -50,6 +50,14 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
     putPriority(action, priority.value);
   }
 
+  public void subPriority(Action action, Priority priority) {
+    putPriority(action, getPriority(action) - priority.value);
+  }
+
+  public void addPriority(Action action, Priority priority) {
+    putPriority(action, getPriority(action) + priority.value);
+  }
+
   protected void putPriorityList(Action action, double priority) {
     for(Map.Entry<Action, Double> e : getPriorityList()) {
       if(e.getKey() == action) {

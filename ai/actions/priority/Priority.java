@@ -2,7 +2,7 @@ package team137.ai.actions.priority;
 
 public enum Priority {
   FORBID_PRIORITY(0),
-  LOWEST_PRIORITY(.1),
+  LOWEST_PRIORITY(.0625),
   DEFAULT_PRIORITY(1),
   LEVEL2_PRIORITY(2),
   LEVEL4_PRIORITY(4),

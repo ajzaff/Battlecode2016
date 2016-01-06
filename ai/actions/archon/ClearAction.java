@@ -43,6 +43,34 @@ public final class ClearAction extends BaseAction {
     return false;
   }
 
+  public static ClearAction fromDirection(Direction dir) {
+    if(dir == Direction.NORTH) {
+      return ClearAction.NORTH;
+    }
+    else if(dir == Direction.NORTH_EAST) {
+      return ClearAction.NORTH_EAST;
+    }
+    else if(dir == Direction.EAST) {
+      return ClearAction.EAST;
+    }
+    else if(dir == Direction.SOUTH_EAST) {
+      return ClearAction.SOUTH_EAST;
+    }
+    else if(dir == Direction.SOUTH) {
+      return ClearAction.SOUTH;
+    }
+    else if(dir == Direction.SOUTH_WEST) {
+      return ClearAction.SOUTH_WEST;
+    }
+    else if(dir == Direction.WEST) {
+      return ClearAction.WEST;
+    }
+    else if(dir == Direction.NORTH_WEST) {
+      return ClearAction.NORTH_WEST;
+    }
+    return null;
+  }
+
   @Override
   public String toString() {
     return repr;

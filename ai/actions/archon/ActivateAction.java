@@ -44,6 +44,34 @@ public class ActivateAction extends BaseAction {
     return false;
   }
 
+  public static ActivateAction fromDirection(Direction dir) {
+    if(dir == Direction.NORTH) {
+      return ActivateAction.NORTH;
+    }
+    else if(dir == Direction.NORTH_EAST) {
+      return ActivateAction.NORTH_EAST;
+    }
+    else if(dir == Direction.EAST) {
+      return ActivateAction.EAST;
+    }
+    else if(dir == Direction.SOUTH_EAST) {
+      return ActivateAction.SOUTH_EAST;
+    }
+    else if(dir == Direction.SOUTH) {
+      return ActivateAction.SOUTH;
+    }
+    else if(dir == Direction.SOUTH_WEST) {
+      return ActivateAction.SOUTH_WEST;
+    }
+    else if(dir == Direction.WEST) {
+      return ActivateAction.WEST;
+    }
+    else if(dir == Direction.NORTH_WEST) {
+      return ActivateAction.NORTH_WEST;
+    }
+    return null;
+  }
+
   @Override
   public String toString() {
     return repr;
