@@ -18,9 +18,9 @@ public final class ClearAction extends BaseAction {
   public static final ClearAction NORTH_WEST = new ClearAction(Direction.NORTH_WEST, "Xnw");
 
   private final Direction dir;
-  private final String repr;
 
   private ClearAction(Direction dir, String repr) {
+    super(repr);
     this.dir = dir;
     this.repr = repr;
   }
@@ -69,10 +69,5 @@ public final class ClearAction extends BaseAction {
       return ClearAction.NORTH_WEST;
     }
     return null;
-  }
-
-  @Override
-  public String toString() {
-    return repr;
   }
 }

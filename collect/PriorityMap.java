@@ -1,26 +1,51 @@
 package team137.collect;
 
+import battlecode.common.Direction;
 import team137.ai.actions.Action;
+import team137.ai.actions.MoveAction;
 import team137.ai.actions.priority.Priority;
 
 import java.util.*;
 
 public abstract class PriorityMap {
 
-  private static final Comparator<Map.Entry<Action, Double>> comparator =
-      new Comparator<Map.Entry<Action, Double>>() {
-        @Override
-        public int compare(Map.Entry<Action, Double> o1, Map.Entry<Action, Double> o2) {
-          return o1.getValue().compareTo(o2.getValue());
-        }
-      };
-
-  private final Map<Action, Map.Entry<Action, Double>> priorityIndex;
-  private final TreeSet<Map.Entry<Action, Double>> prioritySet;
+  private final Map<Action, Entry> priorityIndex;
+  private final TreeSet<Entry> prioritySet;
 
   protected PriorityMap(int initialCapacity) {
     priorityIndex = new HashMap<>(initialCapacity);
-    prioritySet = new TreeSet<>(getComparator());
+    prioritySet = new TreeSet<>();
+  }
+
+  public static class Entry implements Comparable<Entry> {
+    private final Action key;
+    private Double value;
+    public Entry(Action key, Double value) {
+      this.key = key;
+      this.value = value;
+    }
+    public Action getKey() {
+      return key;
+    }
+    public Double getValue() {
+      return value;
+    }
+    public void setValue(double value) {
+      this.value = value;
+    }
+    @Override
+    public int compareTo(Entry o) {
+      int cmp = getValue().compareTo(o.getValue());
+      if(cmp == 0) {
+        cmp = hashCode() < o.hashCode()? 1 :
+            hashCode() > o.hashCode()? -1 : 0;
+      }
+      return cmp;
+    }
+    @Override
+    public String toString() {
+      return key + "=" + String.format("%.2f", value);
+    }
   }
 
   public int size() {
@@ -31,11 +56,11 @@ public abstract class PriorityMap {
     return size() == 0;
   }
 
-  protected TreeSet<Map.Entry<Action, Double>> getPrioritySet() {
+  protected TreeSet<Entry> getPrioritySet() {
     return prioritySet;
   }
 
-  protected Map<Action, Map.Entry<Action, Double>> getPriorityIndex() {
+  protected Map<Action, Entry> getPriorityIndex() {
     return priorityIndex;
   }
 
@@ -47,13 +72,14 @@ public abstract class PriorityMap {
   }
 
   public void putPriority(Action action, double priority) {
-    Map.Entry<Action, Double> entry = getPriorityIndex().get(action);
+    Entry entry = getPriorityIndex().get(action);
     if(entry == null) {
-      entry = new TreeMap.SimpleEntry<>(action, priority);
+      entry = new Entry(action, priority);
       getPriorityIndex().put(action, entry);
       getPrioritySet().add(entry);
     }
     else {
+      entry = getPriorityIndex().get(action);
       getPrioritySet().remove(entry);
       entry.setValue(priority);
       getPrioritySet().add(entry);
@@ -72,17 +98,13 @@ public abstract class PriorityMap {
     putPriority(action, getPriority(action) + priority.value);
   }
 
-  protected Map.Entry<Action, Double> peek() {
+  protected Entry peek() {
     return getPrioritySet().last();
-  }
-
-  public static Comparator<Map.Entry<Action, Double>> getComparator() {
-    return comparator;
   }
 
   public String toString(int n) {
     n = Math.min(n, size());
-    return "(" + getPrioritySet().size() + ") " +
+    return "(" + size() + ") " +
         Arrays.toString(Arrays.copyOfRange(getPrioritySet()
             .descendingSet().toArray(), 0, n));
   }

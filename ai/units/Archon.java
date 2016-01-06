@@ -47,7 +47,7 @@ public class Archon extends BaseUnit {
     checkEvasion(curLoc, neighbors);
 
     rc.setIndicatorString(0, priorityMap.toString(7));
-    priorityMap.fairAct(rc, rand);
+    priorityMap.fairAct(rc);
     priorityMap.update();
   }
 

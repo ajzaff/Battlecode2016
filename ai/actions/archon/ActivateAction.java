@@ -18,11 +18,10 @@ public class ActivateAction extends BaseAction {
   public static final ActivateAction NORTH_WEST = new ActivateAction(Direction.NORTH_WEST, "!nw");
 
   private final Direction dir;
-  private final String repr;
 
   private ActivateAction(Direction dir, String repr) {
+    super(repr);
     this.dir = dir;
-    this.repr = repr;
   }
 
   @Override
@@ -71,10 +70,5 @@ public class ActivateAction extends BaseAction {
     }
     throw new IllegalArgumentException(
         "cannot activate your own location");
-  }
-
-  @Override
-  public String toString() {
-    return repr;
   }
 }

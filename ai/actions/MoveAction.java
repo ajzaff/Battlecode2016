@@ -22,12 +22,10 @@ public final class MoveAction extends BaseAction {
   private static final Random RAND = new Random(1337);
 
   private final Direction dir;
-  private final String repr;
 
   private MoveAction(Direction dir, String repr) {
-    super();
+    super(repr);
     this.dir = dir;
-    this.repr = repr;
   }
 
   @Override
@@ -59,11 +57,6 @@ public final class MoveAction extends BaseAction {
       e.printStackTrace();
     }
     return Direction.OMNI;
-  }
-
-  @Override
-  public String toString() {
-    return repr;
   }
 
   public static MoveAction fromDirection(Direction dir) {
