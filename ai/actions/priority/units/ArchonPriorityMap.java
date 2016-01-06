@@ -3,9 +3,9 @@ package team137.ai.actions.priority.units;
 import team137.ai.actions.archon.ClearAction;
 import team137.ai.actions.priority.Priority;
 
-public class ArchonPriorityMap extends UnitPriorityMap {
+public class ArchonPriorityMap extends DefaultPriorityMap {
   public ArchonPriorityMap() {
-    super(17);
+    super(18);
     init();
   }
 

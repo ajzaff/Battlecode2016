@@ -6,9 +6,4 @@ public class TTM extends BaseUnit {
   public TTM(RobotController rc) {
     super(rc);
   }
-
-  @Override
-  public boolean update() {
-    return false;
-  }
 }

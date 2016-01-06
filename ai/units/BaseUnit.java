@@ -20,8 +20,8 @@ public abstract class BaseUnit implements Unit {
   }
 
   @Override
-  public boolean update() {
-    return false;
+  public void update() {
+
   }
 
   public RobotInfo safeSenseRobotAtLocation(MapLocation loc) {

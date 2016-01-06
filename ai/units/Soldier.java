@@ -6,9 +6,4 @@ public class Soldier extends BaseUnit {
   public Soldier(RobotController rc) {
     super(rc);
   }
-
-  @Override
-  public boolean update() {
-    return false;
-  }
 }

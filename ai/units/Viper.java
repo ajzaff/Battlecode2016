@@ -6,9 +6,4 @@ public class Viper extends BaseUnit {
   public Viper(RobotController rc) {
     super(rc);
   }
-
-  @Override
-  public boolean update() {
-    return false;
-  }
 }
