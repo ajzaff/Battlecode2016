@@ -15,35 +15,50 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
         }
       };
 
-  private final Map<Action, Double> priorityMap;
-  private final List<Map.Entry<Action, Double>> priorityList;
+  private final Map<Action, Map.Entry<Action, Double>> priorityIndex;
+  private final PriorityQueue<Map.Entry<Action, Double>> priorityQueue;
 
   protected ActionPriorityMap(int initialCapacity) {
-    priorityMap = new HashMap<>(initialCapacity);
-    priorityList = new ArrayList<>(initialCapacity);
+    priorityIndex = new HashMap<>(initialCapacity);
+    priorityQueue = new PriorityQueue<>(initialCapacity, getComparator());
   }
 
   public int size() {
-    return getPriorityMap().size();
+    return getPriorityIndex().size();
   }
 
   public boolean isEmpty() {
     return size() == 0;
   }
 
-  protected Map<Action, Double> getPriorityMap() {
-    return priorityMap;
+  protected Map<Action, Map.Entry<Action, Double>> getPriorityIndex() {
+    return priorityIndex;
   }
 
-  protected List<Map.Entry<Action, Double>> getPriorityList() {
-    return priorityList;
+  protected PriorityQueue<Map.Entry<Action, Double>> getPriorityQueue() {
+    return priorityQueue;
+  }
+
+  @Override
+  public Double getPriority(Action action) {
+    return getPriorityIndex().get(action).getValue();
   }
 
   @Override
   public void putPriority(Action action, double priority) {
-    getPriorityMap().put(action, priority);
-    putPriorityList(action, priority);
-    sort();
+    if(getPriorityIndex().containsKey(action)) {
+      Map.Entry<Action, Double> entry =
+          getPriorityIndex().get(action);
+      getPriorityQueue().remove(entry);
+      entry.setValue(priority);
+      getPriorityQueue().add(entry);
+    }
+    else {
+      Map.Entry<Action, Double> entry =
+          new HashMap.SimpleEntry<>(action, priority);
+      getPriorityQueue().add(entry);
+      getPriorityIndex().put(action, entry);
+    }
   }
 
   public void putPriority(Action action, Priority priority) {
@@ -58,46 +73,23 @@ public abstract class ActionPriorityMap implements PriorityMap<Action> {
     putPriority(action, getPriority(action) + priority.value);
   }
 
-  protected void putPriorityList(Action action, double priority) {
-    for(Map.Entry<Action, Double> e : getPriorityList()) {
-      if(e.getKey() == action) {
-        e.setValue(priority);
-        return;
-      }
-    }
-    Map.Entry<Action, Double> entry =
-        new HashMap.SimpleEntry<>(action, priority);
-    getPriorityList().add(entry);
-  }
-
-  @Override
-  public Double getPriority(Action action) {
-    return getPriorityMap().get(action);
-  }
-
   protected Map.Entry<Action, Double> peek() {
-    if(isEmpty()) {
-      return null;
-    }
-    return getPriorityList().get(0);
-  }
-
-  protected void sort() {
-    getPriorityList().sort(getComparator());
+    return getPriorityQueue().peek();
   }
 
   public static Comparator<Map.Entry<Action, Double>> getComparator() {
     return comparator;
   }
 
+  public String toString(int n) {
+    return "(" + getPriorityQueue().size() + ") " +
+        Arrays.toString(Arrays.copyOfRange(
+            getPriorityQueue().toArray(), 0, n));
+  }
+
   @Override
   public String toString() {
     return toString(size());
-  }
-
-  public String toString(int n) {
-    return "(" + getPriorityList().size() + ") " +
-        Arrays.toString(getPriorityList().subList(0, n).toArray());
   }
 
 }

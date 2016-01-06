@@ -61,20 +61,20 @@ public class Archon extends BaseUnit {
   }
 
   public void checkParts(MapLocation curLoc) {
-    double curParts = rc.senseParts(curLoc);
+//    double curParts = rc.senseParts(curLoc);
 
     // max parts
-    MapLocation maxPartsLoc = curLoc;
-    Direction maxPartsDir = OMNI;
-    double maxParts = 0;
+//    MapLocation maxPartsLoc = curLoc;
+//    Direction maxPartsDir = OMNI;
+//    double maxParts = 0;
   }
 
   public void checkMinRubblePath(MapLocation curLoc) {
 
     // min rubble
-    MapLocation minAdjacentRubbleLoc = curLoc;
-    Direction minAdjacentRubbleDir = OMNI;
-    double minAdjacentRubble = Double.MAX_VALUE;
+//    MapLocation minAdjacentRubbleLoc = curLoc;
+//    Direction minAdjacentRubbleDir = OMNI;
+//    double minAdjacentRubble = Double.MAX_VALUE;
   }
 
   public void checkWallAvoidance(MapLocation curLoc, MapLocation[] tiles) {
