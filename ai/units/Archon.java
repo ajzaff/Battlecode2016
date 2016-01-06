@@ -46,7 +46,7 @@ public class Archon extends BaseUnit {
     checkNeutrals(curLoc, neighbors);
     checkEvasion(curLoc, neighbors);
 
-    rc.setIndicatorString(0, priorityMap.toString(3));
+    rc.setIndicatorString(0, priorityMap.toString(7));
     priorityMap.fairAct(rc, rand);
     priorityMap.update();
   }
@@ -93,17 +93,22 @@ public class Archon extends BaseUnit {
       if(robo.team == Team.NEUTRAL) {
         Direction dirToLoc = curLoc.directionTo(robo.location);
         Action action;
+        Priority priority;
         if(curLoc.isAdjacentTo(robo.location)) {
           action = ActivateAction.fromDirection(dirToLoc);
+          priority = Priority.LEVEL8_PRIORITY;
+          hasNeutrals = true;
         }
         else {
           action = MoveAction.fromDirection(dirToLoc);
+          priority = Priority.DEFAULT_PRIORITY;
         }
-        priorityMap.addPriority(action, Priority.DEFAULT_PRIORITY);
+        priorityMap.addPriority(action, priority);
       }
     }
 
     if(! hasNeutrals) {
+      priorityMap.forbidActivate();
     }
   }
 
