@@ -43,7 +43,9 @@ public class Archon extends BaseUnit {
       rc.setIndicatorString(0, priorityMap.toString(7));
 
       // act!
-      priorityMap.fairAct(rc, rand);
+      if(rc.isCoreReady()) {
+        priorityMap.fairAct(rc, rand);
+      }
     }
     catch (GameActionException e) {
       e.printStackTrace();

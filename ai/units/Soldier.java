@@ -19,10 +19,14 @@ public class Soldier extends BaseUnit {
   @Override
   public void update() {
 
+    // debug!
     rc.setIndicatorString(0, priorityMap.toString(7));
 
     try {
-      priorityMap.fairAct(rc, rand);
+      if(rc.isCoreReady()) {
+        // act!
+        priorityMap.fairAct(rc, rand);
+      }
     }
     catch (Exception e) {
       e.printStackTrace();
