@@ -5,19 +5,27 @@ import battlecode.common.Direction;
 import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public final class MoveAction extends BaseAction {
 
-  public static final MoveAction OMNI = new MoveAction(Direction.OMNI, ".");
-  public static final MoveAction NORTH = new MoveAction(Direction.NORTH, "^");
-  public static final MoveAction NORTH_EAST = new MoveAction(Direction.NORTH_EAST, "ne");
-  public static final MoveAction EAST = new MoveAction(Direction.EAST, ">");
-  public static final MoveAction SOUTH_EAST = new MoveAction(Direction.SOUTH_EAST, "se");
-  public static final MoveAction SOUTH = new MoveAction(Direction.SOUTH, "v");
-  public static final MoveAction SOUTH_WEST = new MoveAction(Direction.SOUTH_WEST, "sw");
-  public static final MoveAction WEST = new MoveAction(Direction.WEST, "<");
-  public static final MoveAction NORTH_WEST = new MoveAction(Direction.NORTH_WEST, "nw");
+  private static final Map<Direction, MoveAction> actionMap;
+
+  static {
+    actionMap = new HashMap<>(10);
+    actionMap.put(Direction.NONE, new MoveAction(Direction.OMNI, "."));
+    actionMap.put(Direction.OMNI, new MoveAction(Direction.OMNI, "."));
+    actionMap.put(Direction.NORTH, new MoveAction(Direction.NORTH, "^"));
+    actionMap.put(Direction.NORTH_EAST, new MoveAction(Direction.NORTH, "/^"));
+    actionMap.put(Direction.EAST, new MoveAction(Direction.NORTH, ">"));
+    actionMap.put(Direction.SOUTH_EAST, new MoveAction(Direction.NORTH, "\\v"));
+    actionMap.put(Direction.SOUTH, new MoveAction(Direction.NORTH, "v"));
+    actionMap.put(Direction.SOUTH_WEST, new MoveAction(Direction.NORTH, "v/"));
+    actionMap.put(Direction.WEST, new MoveAction(Direction.NORTH, "<"));
+    actionMap.put(Direction.NORTH_WEST, new MoveAction(Direction.NORTH, "^\\"));
+  }
 
   private static final Random RAND = new Random(1337);
 
@@ -69,32 +77,6 @@ public final class MoveAction extends BaseAction {
   }
 
   public static MoveAction fromDirection(Direction dir) {
-    if(dir == Direction.NORTH) {
-      return MoveAction.NORTH;
-    }
-    else if(dir == Direction.NORTH_EAST) {
-      return MoveAction.NORTH_EAST;
-    }
-    else if(dir == Direction.EAST) {
-      return MoveAction.EAST;
-    }
-    else if(dir == Direction.SOUTH_EAST) {
-      return MoveAction.SOUTH_EAST;
-    }
-    else if(dir == Direction.SOUTH) {
-      return MoveAction.SOUTH;
-    }
-    else if(dir == Direction.SOUTH_WEST) {
-      return MoveAction.SOUTH_WEST;
-    }
-    else if(dir == Direction.WEST) {
-      return MoveAction.WEST;
-    }
-    else if(dir == Direction.NORTH_WEST) {
-      return MoveAction.NORTH_WEST;
-    }
-    else {
-      return MoveAction.OMNI;
-    }
+    return actionMap.get(dir);
   }
 }

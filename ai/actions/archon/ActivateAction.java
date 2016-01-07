@@ -6,16 +6,24 @@ import battlecode.common.MapLocation;
 import battlecode.common.RobotController;
 import team137.ai.actions.BaseAction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ActivateAction extends BaseAction {
 
-  public static final ActivateAction NORTH = new ActivateAction(Direction.NORTH, "+n");
-  public static final ActivateAction NORTH_EAST = new ActivateAction(Direction.NORTH_EAST, "+ne");
-  public static final ActivateAction EAST = new ActivateAction(Direction.EAST, "+e");
-  public static final ActivateAction SOUTH_EAST = new ActivateAction(Direction.SOUTH_EAST, "+se");
-  public static final ActivateAction SOUTH = new ActivateAction(Direction.SOUTH, "+s");
-  public static final ActivateAction SOUTH_WEST = new ActivateAction(Direction.SOUTH_WEST, "+sw");
-  public static final ActivateAction WEST = new ActivateAction(Direction.WEST, "+w");
-  public static final ActivateAction NORTH_WEST = new ActivateAction(Direction.NORTH_WEST, "+nw");
+  private static final Map<Direction, ActivateAction> actionMap;
+
+  static {
+    actionMap = new HashMap<>(8);
+    actionMap.put(Direction.NORTH, new ActivateAction(Direction.NORTH, "+n"));
+    actionMap.put(Direction.NORTH_EAST, new ActivateAction(Direction.NORTH, "+ne"));
+    actionMap.put(Direction.EAST, new ActivateAction(Direction.NORTH, "+e"));
+    actionMap.put(Direction.SOUTH_EAST, new ActivateAction(Direction.NORTH, "+se"));
+    actionMap.put(Direction.SOUTH, new ActivateAction(Direction.NORTH, "+s"));
+    actionMap.put(Direction.SOUTH_WEST, new ActivateAction(Direction.NORTH, "+sw"));
+    actionMap.put(Direction.WEST, new ActivateAction(Direction.NORTH, "+w"));
+    actionMap.put(Direction.NORTH_WEST, new ActivateAction(Direction.NORTH, "+nw"));
+  }
 
   private final Direction dir;
 
@@ -31,32 +39,7 @@ public class ActivateAction extends BaseAction {
     return true;
   }
 
-  public static ActivateAction fromDirection(Direction dir) throws IllegalArgumentException {
-    if(dir == Direction.NORTH) {
-      return ActivateAction.NORTH;
-    }
-    else if(dir == Direction.NORTH_EAST) {
-      return ActivateAction.NORTH_EAST;
-    }
-    else if(dir == Direction.EAST) {
-      return ActivateAction.EAST;
-    }
-    else if(dir == Direction.SOUTH_EAST) {
-      return ActivateAction.SOUTH_EAST;
-    }
-    else if(dir == Direction.SOUTH) {
-      return ActivateAction.SOUTH;
-    }
-    else if(dir == Direction.SOUTH_WEST) {
-      return ActivateAction.SOUTH_WEST;
-    }
-    else if(dir == Direction.WEST) {
-      return ActivateAction.WEST;
-    }
-    else if(dir == Direction.NORTH_WEST) {
-      return ActivateAction.NORTH_WEST;
-    }
-    throw new IllegalArgumentException(
-        "cannot activate your own location");
+  public static ActivateAction fromDirection(Direction dir) {
+    return actionMap.get(dir);
   }
 }

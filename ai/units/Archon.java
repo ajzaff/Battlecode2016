@@ -10,6 +10,8 @@ import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Archon extends BaseUnit {
@@ -29,18 +31,27 @@ public class Archon extends BaseUnit {
   public void update() {
 
     MapLocation curLoc = rc.getLocation();
-    MapLocation[] tiles = getAllMapLocationsWithinRadiusSq(curLoc, ARCHON.sensorRadiusSquared);
-    RobotInfo[] neighbors = rc.senseNearbyRobots();
+    MapLocation[] localTiles = getAllMapLocationsWithinRadiusSq(curLoc, ARCHON.sensorRadiusSquared);
+
+    // check if we're stuck in impassable rubble!
+    checkStuckInRubble(curLoc);
+
+    // adjacent rubble multipliers (for path-finding)
+    Map<Direction, Double> rubbleMap = new HashMap<>(8);
 
     try {
-      checkClearRubble(curLoc);
-      checkParts(curLoc);
-      checkWallAvoidance(curLoc, tiles);
-      checkNeutrals(curLoc, neighbors);
-      checkEvasion(curLoc, neighbors);
+      for(MapLocation loc : localTiles) {
+        if(loc.isAdjacentTo(curLoc)) {
+          checkRubble(loc, rubbleMap);
+        }
+        checkParts(loc);
+      }
 
       // debug
       rc.setIndicatorString(0, priorityMap.toString(7));
+
+      // apply rubble map
+      applyRubbleMap(rubbleMap);
 
       // act!
       if(rc.isCoreReady()) {
@@ -55,7 +66,13 @@ public class Archon extends BaseUnit {
     priorityMap.update();
   }
 
-  public void checkClearRubble(MapLocation curLoc) {
+  private void applyRubbleMap(Map<Direction, Double> rubbleMap) {
+    for(Direction dir : rubbleMap.keySet()) {
+      priorityMap.putPriority(MoveAction.fromDirection(dir), priorityMap.getPriority());
+    }
+  }
+
+  public void checkStuckInRubble(MapLocation curLoc) {
     double curRubble = rc.senseRubble(curLoc);
 
     // see if we are stuck!
@@ -64,7 +81,13 @@ public class Archon extends BaseUnit {
     }
   }
 
-  public void checkParts(MapLocation curLoc) {
+  public void checkClearRubble(MapLocation curLoc) {
+
+
+
+  }
+
+  public void checkParts(MapLocation loc) {
 //    double curParts = rc.senseParts(curLoc);
 
     // max parts
@@ -73,7 +96,7 @@ public class Archon extends BaseUnit {
 //    double maxParts = 0;
   }
 
-  public void checkMinRubblePath(MapLocation curLoc) {
+  public void checkRubble(MapLocation loc, Map<Direction, Double> rubbleMap) {
 
     // min rubble
 //    MapLocation minAdjacentRubbleLoc = curLoc;

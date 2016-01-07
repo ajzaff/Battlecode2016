@@ -5,16 +5,24 @@ import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
 import team137.ai.actions.BaseAction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class ClearAction extends BaseAction {
 
-  public static final ClearAction NORTH = new ClearAction(Direction.NORTH, "Xn");
-  public static final ClearAction NORTH_EAST = new ClearAction(Direction.NORTH_EAST, "Xne");
-  public static final ClearAction EAST = new ClearAction(Direction.EAST, "Xe");
-  public static final ClearAction SOUTH_EAST = new ClearAction(Direction.SOUTH_EAST, "Xse");
-  public static final ClearAction SOUTH = new ClearAction(Direction.SOUTH, "Xs");
-  public static final ClearAction SOUTH_WEST = new ClearAction(Direction.SOUTH_WEST, "Xsw");
-  public static final ClearAction WEST = new ClearAction(Direction.WEST, "Xw");
-  public static final ClearAction NORTH_WEST = new ClearAction(Direction.NORTH_WEST, "Xnw");
+  private static final Map<Direction, ClearAction> actionMap;
+
+  static {
+    actionMap = new HashMap<>(8);
+    actionMap.put(Direction.NORTH, new ClearAction(Direction.NORTH, "Xn"));
+    actionMap.put(Direction.NORTH_EAST, new ClearAction(Direction.NORTH, "Xne"));
+    actionMap.put(Direction.EAST, new ClearAction(Direction.NORTH, "Xe"));
+    actionMap.put(Direction.SOUTH_EAST, new ClearAction(Direction.NORTH, "Xse"));
+    actionMap.put(Direction.SOUTH, new ClearAction(Direction.NORTH, "Xs"));
+    actionMap.put(Direction.SOUTH_WEST, new ClearAction(Direction.NORTH, "Xsw"));
+    actionMap.put(Direction.WEST, new ClearAction(Direction.NORTH, "Xw"));
+    actionMap.put(Direction.NORTH_WEST, new ClearAction(Direction.NORTH, "Xnw"));
+  }
 
   private final Direction dir;
 
@@ -43,30 +51,6 @@ public final class ClearAction extends BaseAction {
   }
 
   public static ClearAction fromDirection(Direction dir) {
-    if(dir == Direction.NORTH) {
-      return ClearAction.NORTH;
-    }
-    else if(dir == Direction.NORTH_EAST) {
-      return ClearAction.NORTH_EAST;
-    }
-    else if(dir == Direction.EAST) {
-      return ClearAction.EAST;
-    }
-    else if(dir == Direction.SOUTH_EAST) {
-      return ClearAction.SOUTH_EAST;
-    }
-    else if(dir == Direction.SOUTH) {
-      return ClearAction.SOUTH;
-    }
-    else if(dir == Direction.SOUTH_WEST) {
-      return ClearAction.SOUTH_WEST;
-    }
-    else if(dir == Direction.WEST) {
-      return ClearAction.WEST;
-    }
-    else if(dir == Direction.NORTH_WEST) {
-      return ClearAction.NORTH_WEST;
-    }
-    return null;
+    return actionMap.get(dir);
   }
 }
