@@ -2,7 +2,6 @@ package team137.ai.actions.archon;
 
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
-import battlecode.common.MapLocation;
 import battlecode.common.RobotController;
 import team137.ai.actions.BaseAction;
 

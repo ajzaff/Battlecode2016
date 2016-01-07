@@ -29,34 +29,43 @@ public final class MoveAction extends BaseAction {
   }
 
   @Override
-  public boolean act(RobotController rc) {
-    return safeMoveProximate(rc, RAND) != Direction.OMNI;
-  }
-
-  public Direction safeMoveProximate(RobotController rc, Random rand) {
-    try {
-      if(rc.isCoreReady()) {
-        if(rc.canMove(dir)) {
-          rc.move(dir);
-          return dir;
-        }
-        Direction d;
-        if(rand.nextBoolean()) {
-          d = dir.rotateLeft();
-        }
-        else {
-          d = dir.rotateRight();
-        }
-        if(rc.canMove(d)) {
-          rc.move(d);
-          return d;
-        }
-      }
+  public boolean act(RobotController rc) throws GameActionException {
+    if(rc.canMove(dir)) {
+      rc.move(dir);
+      return true;
     }
-    catch (GameActionException e) {
-      e.printStackTrace();
+    /* dir is blocked */
+    Direction[] d;
+    boolean choice = RAND.nextBoolean();
+    if (choice) {
+      d = new Direction[]{dir.rotateLeft(), dir.rotateRight()};
+    } else {
+      d = new Direction[]{dir.rotateRight(), dir.rotateLeft()};
     }
-    return Direction.OMNI;
+    if (rc.canMove(d[0])) {
+      rc.move(d[0]);
+      return true;
+    }
+    if(rc.canMove(d[1])) {
+      rc.move(d[1]);
+      return true;
+    }
+    /* left and right are blocked */
+    if (choice) {
+      d = new Direction[]{dir.rotateLeft().rotateLeft(), dir.rotateRight().rotateRight()};
+    } else {
+      d = new Direction[]{dir.rotateRight().rotateRight(), dir.rotateLeft().rotateLeft()};
+    }
+    if (rc.canMove(d[0])) {
+      rc.move(d[0]);
+      return true;
+    }
+    if(rc.canMove(d[1])) {
+      rc.move(d[1]);
+      return true;
+    }
+    /* movement is blocked in forward directions */
+    return false;
   }
 
   public static MoveAction fromDirection(Direction dir) {
@@ -88,17 +97,4 @@ public final class MoveAction extends BaseAction {
       return MoveAction.OMNI;
     }
   }
-
-//  public boolean safeMove(RobotController rc) {
-//    try {
-//      if(rc.isCoreReady() && rc.canMove(dir)) {
-//        rc.move(dir);
-//        return true;
-//      }
-//    }
-//    catch (GameActionException e) {
-//      e.printStackTrace();
-//    }
-//    return false;
-//  }
 }
