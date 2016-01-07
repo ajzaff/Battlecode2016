@@ -60,14 +60,8 @@ public class DefaultPrioritySet extends PrioritySet {
 
   public void update() {
     // decay all actions!
-    // ------------------------------------------------
-    // We can access the index directly for decay.
-    // Due to the assumption of a linear decay function
-    // the order in the priority queue will not change.
-    // ------------------------------------------------
-    for(Action action : getPriorityIndex().keySet()) {
-      Entry entry = getPriorityIndex().get(action);
-      entry.setValue(decay(entry.getValue()));
+    for(Entry entry : getPrioritySet()) {
+      putPriority(entry.getKey(), decay(entry.getKey()));
     }
   }
 
