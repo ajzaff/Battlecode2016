@@ -1,18 +1,18 @@
 package team137.ai.units;
 
 import battlecode.common.RobotController;
-import team137.ai.actions.priority.units.SoldierPriorityMap;
+import team137.ai.actions.priority.units.SoldierPrioritySet;
 
 import java.util.Random;
 
 public class Soldier extends BaseUnit {
 
-  private final SoldierPriorityMap priorityMap;
+  private final SoldierPrioritySet priorityMap;
   private final Random rand;
 
   public Soldier(RobotController rc) {
     super(rc);
-    priorityMap = new SoldierPriorityMap();
+    priorityMap = new SoldierPrioritySet();
     rand = new Random(rc.getID());
   }
 
@@ -21,7 +21,12 @@ public class Soldier extends BaseUnit {
 
     rc.setIndicatorString(0, priorityMap.toString(7));
 
-    priorityMap.fairAct(rc, rand);
+    try {
+      priorityMap.fairAct(rc, rand);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
     priorityMap.update();
   }
 }

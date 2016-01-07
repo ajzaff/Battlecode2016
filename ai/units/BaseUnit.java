@@ -2,8 +2,6 @@ package team137.ai.units;
 
 import battlecode.common.*;
 
-import java.util.Random;
-
 public abstract class BaseUnit implements Unit {
   protected final RobotController rc;
   public BaseUnit(RobotController rc) {

@@ -1,6 +1,5 @@
 package team137.ai.units;
 
-import static battlecode.common.Direction.*;
 import static battlecode.common.RobotType.*;
 import static battlecode.common.MapLocation.getAllMapLocationsWithinRadiusSq;
 
@@ -9,19 +8,19 @@ import team137.ai.actions.Action;
 import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
-import team137.ai.actions.priority.units.ArchonPriorityMap;
+import team137.ai.actions.priority.units.ArchonPrioritySet;
 
 import java.util.Random;
 
 public class Archon extends BaseUnit {
 
-  private final ArchonPriorityMap priorityMap;
+  private final ArchonPrioritySet priorityMap;
   private final Team team;
   private final Random rand;
 
   public Archon(RobotController rc) {
     super(rc);
-    priorityMap = new ArchonPriorityMap();
+    priorityMap = new ArchonPrioritySet();
     team = rc.getTeam();
     rand = new Random(rc.getID());
   }
@@ -47,7 +46,12 @@ public class Archon extends BaseUnit {
     checkEvasion(curLoc, neighbors);
 
     rc.setIndicatorString(0, priorityMap.toString(7));
-    priorityMap.fairAct(rc, rand);
+    try {
+      priorityMap.fairAct(rc, rand);
+    }
+    catch (GameActionException e) {
+      e.printStackTrace();
+    }
     priorityMap.update();
   }
 

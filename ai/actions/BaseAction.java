@@ -1,7 +1,5 @@
 package team137.ai.actions;
 
-import java.util.Objects;
-
 public abstract class BaseAction implements Action {
 
   protected String repr;

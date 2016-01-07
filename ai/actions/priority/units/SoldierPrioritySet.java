@@ -1,9 +1,9 @@
 package team137.ai.actions.priority.units;
 
-public class SoldierPriorityMap extends DefaultPriorityMap {
+public class SoldierPrioritySet extends DefaultPrioritySet {
 
-  public SoldierPriorityMap() {
-    super(0);
+  public SoldierPrioritySet() {
+    super();
     init();
   }
 

@@ -1,32 +1,23 @@
 package team137.ai.actions.priority.units;
 
 import battlecode.common.Direction;
+import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
 import team137.ai.actions.Action;
 import team137.ai.actions.MoveAction;
-import team137.collect.PriorityMap;
+import team137.collect.PrioritySet;
 import team137.ai.actions.priority.Priority;
 
 import java.util.*;
 
-public class DefaultPriorityMap extends PriorityMap {
+public class DefaultPrioritySet extends PrioritySet {
 
-  protected DefaultPriorityMap(int requiredCapacity) {
-    super(9 + requiredCapacity);
+  protected DefaultPrioritySet() {
+    super(50);
     init();
   }
 
   protected void init() {
-    // put 9 movement actions.
-    putPriority(MoveAction.OMNI, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.NORTH, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.NORTH_EAST, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.EAST, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.SOUTH_EAST, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.SOUTH, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.SOUTH_WEST, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.WEST, Priority.DEFAULT_PRIORITY);
-    putPriority(MoveAction.NORTH_WEST, Priority.DEFAULT_PRIORITY);
   }
 
   public void addMovePriority(Direction dir, Priority priority) {
@@ -53,28 +44,17 @@ public class DefaultPriorityMap extends PriorityMap {
     }
   }
 
-  public void fairAct(RobotController rc, Random rand) {
-    List<Action> bestActions = new ArrayList<>(size());
-    Entry bestEntry = peek();
+  public void fairAct(RobotController rc, Random rand) throws GameActionException {
+    Entry bestEntry = peek(rand);
+    Action action = bestEntry.getKey();
 
-    NavigableSet<Entry> descendingSet = getPrioritySet().descendingSet();
-    for(Entry entry : descendingSet) {
-      Double entryValue = entry.getValue();
-      if(entryValue > Priority.FORBID_PRIORITY.value && entryValue.equals(bestEntry.getValue())) {
-        bestActions.add(entry.getKey());
-      }
-      else {
-        break;
-      }
-    }
-
-    if(! bestActions.isEmpty()) {
-      int n = bestActions.size();
-      Action action = bestActions.get(rand.nextInt(n));
+    if(action != null) {
       action.act(rc);
 
       // calculate new priority "decay" for fairness
-      putPriority(action, decay(action));
+      if(bestEntry.getValue() > Priority.LOWEST_PRIORITY.value) {
+        putPriority(action, decay(action));
+      }
     }
   }
 
