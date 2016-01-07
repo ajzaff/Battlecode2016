@@ -43,7 +43,7 @@ public class ActivateAction extends BaseAction {
     return false;
   }
 
-  public static ActivateAction fromDirection(Direction dir) {
+  public static ActivateAction fromDirection(Direction dir) throws IllegalArgumentException {
     if(dir == Direction.NORTH) {
       return ActivateAction.NORTH;
     }

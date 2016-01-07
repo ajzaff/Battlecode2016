@@ -61,6 +61,9 @@ public class PrioritySet {
     if(getPriorityIndex().containsKey(action)) {
       return getPriorityIndex().get(action).getValue();
     }
+    if(getMinimalSet().contains(action)) {
+      return Priority.LOWEST_PRIORITY.value;
+    }
     return Priority.FORBID_PRIORITY.value;
   }
 

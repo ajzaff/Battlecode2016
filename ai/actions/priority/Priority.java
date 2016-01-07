@@ -1,5 +1,7 @@
 package team137.ai.actions.priority;
 
+import team137.ai.actions.Action;
+
 public enum Priority {
   FORBID_PRIORITY(0),
   LOWEST_PRIORITY(.0625),
@@ -14,5 +16,10 @@ public enum Priority {
 
   Priority(double value) {
     this.value = value;
+  }
+
+  public static double decay(double priority) {
+    // important: decay must be linear!
+    return Math.max(Priority.LOWEST_PRIORITY.value, .9 * priority - .01);
   }
 }

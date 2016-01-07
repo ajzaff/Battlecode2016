@@ -4,16 +4,11 @@ import battlecode.common.Direction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 
-public class ArchonPrioritySet extends DefaultPrioritySet {
+public class ArchonPrioritySet extends MovablePrioritySet {
 
   public ArchonPrioritySet() {
     super();
     init();
-  }
-
-  @Override
-  protected void init() {
-    super.init();
   }
 
   public void addActivatePriority(Direction dir, Priority priority) {

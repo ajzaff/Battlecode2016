@@ -1,14 +1,8 @@
 package team137.ai.actions.priority.units;
 
-public class SoldierPrioritySet extends DefaultPrioritySet {
+public class SoldierPrioritySet extends MovablePrioritySet {
 
   public SoldierPrioritySet() {
     super();
-    init();
-  }
-
-  @Override
-  protected void init() {
-    super.init();
   }
 }
