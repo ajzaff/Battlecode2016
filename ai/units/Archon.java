@@ -29,29 +29,27 @@ public class Archon extends BaseUnit {
   public void update() {
 
     MapLocation curLoc = rc.getLocation();
-
-    // check stuff.
-    checkClearRubble(curLoc);
-    checkParts(curLoc);
-
     MapLocation[] tiles = getAllMapLocationsWithinRadiusSq(curLoc, ARCHON.sensorRadiusSquared);
-
-    // check wall avoidance
-    checkWallAvoidance(curLoc, tiles);
-
     RobotInfo[] neighbors = rc.senseNearbyRobots();
 
-    // check neighbors
-    checkNeutrals(curLoc, neighbors);
-    checkEvasion(curLoc, neighbors);
-
-    rc.setIndicatorString(0, priorityMap.toString(7));
     try {
+      checkClearRubble(curLoc);
+      checkParts(curLoc);
+      checkWallAvoidance(curLoc, tiles);
+      checkNeutrals(curLoc, neighbors);
+      checkEvasion(curLoc, neighbors);
+
+      // debug
+      rc.setIndicatorString(0, priorityMap.toString(7));
+
+      // act!
       priorityMap.fairAct(rc, rand);
     }
     catch (GameActionException e) {
       e.printStackTrace();
     }
+
+    // update priorities
     priorityMap.update();
   }
 

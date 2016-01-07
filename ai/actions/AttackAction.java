@@ -11,5 +11,6 @@ public class AttackAction extends BaseAction {
 
   @Override
   public boolean act(RobotController rc) throws GameActionException {
+    return true;
   }
 }
