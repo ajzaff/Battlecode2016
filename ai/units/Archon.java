@@ -1,7 +1,5 @@
 package team137.ai.units;
 
-import static battlecode.common.RobotType.*;
-
 import battlecode.common.*;
 import team137.ai.actions.Action;
 import team137.ai.actions.MoveAction;
@@ -9,18 +7,22 @@ import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
 import team137.ai.tables.Bounds;
-import team137.ai.tables.robots.DefaultFleeWeights;
+import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
 import team137.ai.tables.robots.RobotTable;
-import team137.ai.tables.Rubble;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
-public class Archon extends BaseUnit {
+import static battlecode.common.RobotType.ARCHON;
+import static battlecode.common.RobotType.ZOMBIEDEN;
+
+public class Archon extends MovableUnit {
 
   ///////////// "SHARED" FIELDS
 
-  public static final RobotTable<FleeWeights.Row> FLEE_TABLE = FleeWeights.newInstance();
+  public static final FleeWeights FLEE_TABLE = FleeWeights.newInstance();
 
 
   static {
@@ -35,7 +37,6 @@ public class Archon extends BaseUnit {
 
   private final ArchonPrioritySet prioritySet; // priority-queue-like structure
   private final Random rand;                   // random number generator
-  private final Team team;                     // our team
 
   ///////////// OPERATION FIELDS
 
@@ -46,7 +47,6 @@ public class Archon extends BaseUnit {
     super(rc);
     prioritySet = new ArchonPrioritySet();
     bounds = Bounds.newBounds();
-    team = rc.getTeam();
     rand = new Random(rc.getID());
   }
 
@@ -74,7 +74,7 @@ public class Archon extends BaseUnit {
       // do stuff with local robots!
       for(RobotInfo robotInfo : localRobots) {
         adjacentNeutral |= checkNeutrals(curLoc, robotInfo);
-        checkEnemy(curLoc, robotInfo);
+        checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo);
       }
 
       // BEGIN ACTUATION
@@ -153,38 +153,5 @@ public class Archon extends BaseUnit {
     return adjacentNeutral;
   }
 
-  public void checkEnemy(
-      MapLocation curLoc,
-      RobotInfo robotInfo) throws GameActionException
-  {
-    if(robotInfo.team != team && robotInfo.team != Team.NEUTRAL) {
-      Direction dirToLoc = curLoc.directionTo(robotInfo.location);
-      double x0 = FLEE_TABLE.get(robotInfo.type).x0;
-      double x1 = FLEE_TABLE.get(robotInfo.type).x1;
-      // forward
-      prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(dirToLoc),
-          x0 * Priority.LEVEL16_PRIORITY.value);
-      // left spill
-      prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(dirToLoc.rotateLeft()),
-          x1 * Priority.LEVEL16_PRIORITY.value);
-      // right spill
-      prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(dirToLoc.rotateRight()),
-          x1 * Priority.LEVEL16_PRIORITY.value);
 
-      // add priority to all other directions!
-      Direction endDir = dirToLoc.rotateRight();
-      dirToLoc = dirToLoc.rotateLeft();
-      while((dirToLoc = dirToLoc.rotateLeft()) != endDir) {
-        // add good direction
-        prioritySet.addPriority(
-            MoveAction.fromDirection(dirToLoc),
-            -x1 * Priority.LEVEL4_PRIORITY.value);
-      }
-
-      rc.setIndicatorString(1, "See dangerous " + robotInfo.type + "; x0="+x0 + "; x1="+x1);
-    }
-  }
 }

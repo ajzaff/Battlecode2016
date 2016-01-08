@@ -2,8 +2,6 @@ package team137.ai.tables.robots;
 
 import battlecode.common.RobotType;
 
-import static battlecode.common.RobotType.*;
-
 public class FleeWeights extends RobotTable<FleeWeights.Row> {
 
   private static final FleeWeights.Row[] DEFAULT_FLEE_TABLE;

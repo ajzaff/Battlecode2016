@@ -1,6 +1,6 @@
 package team137.ai.units;
 
-import battlecode.common.*;
+import battlecode.common.RobotController;
 
 public class Scout extends BaseUnit {
   public Scout(RobotController rc) {

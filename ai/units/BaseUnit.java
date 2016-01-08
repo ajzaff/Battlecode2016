@@ -1,6 +1,7 @@
 package team137.ai.units;
 
-import battlecode.common.*;
+import battlecode.common.Clock;
+import battlecode.common.RobotController;
 
 public abstract class BaseUnit implements Unit {
   protected final RobotController rc;

@@ -4,7 +4,6 @@ import battlecode.common.*;
 import team137.ai.actions.AttackAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.TurretPrioritySet;
-import team137.ai.tables.robots.FleeWeights;
 import team137.ai.tables.robots.RobotTable;
 import team137.ai.tables.robots.UniformRobotWeights;
 
