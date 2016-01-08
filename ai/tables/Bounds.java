@@ -25,26 +25,31 @@ public class Bounds {
     }
   }
 
-  public void update(RobotController rc, MapLocation curLoc, int range) throws GameActionException {
-    checkBound(rc, Type.NORTH, Direction.NORTH, curLoc, range);
-    checkBound(rc, Type.EAST, Direction.EAST, curLoc, range);
-    checkBound(rc, Type.SOUTH, Direction.SOUTH, curLoc, range);
-    checkBound(rc, Type.WEST, Direction.WEST, curLoc, range);
+  public Direction update(RobotController rc, MapLocation curLoc, int sensorRadius) throws GameActionException {
+    MapLocation loc = new MapLocation(curLoc.x, curLoc.y);
+    Direction d;
+    d = checkBound(rc, Type.NORTH, Direction.NORTH, curLoc, sensorRadius); loc = loc.add(d);
+    d = checkBound(rc, Type.EAST, Direction.EAST, curLoc, sensorRadius);   loc = loc.add(d);
+    d = checkBound(rc, Type.SOUTH, Direction.SOUTH, curLoc, sensorRadius); loc = loc.add(d);
+    d = checkBound(rc, Type.WEST, Direction.WEST, curLoc, sensorRadius);   loc = loc.add(d);
+    return curLoc.directionTo(loc);
   }
 
-  private void checkBound(RobotController rc,
-                          Type type,
-                          Direction dir,
-                          MapLocation curLoc,
-                          int range)
-      throws GameActionException
+  private Direction checkBound(
+      RobotController rc,
+      Type type,
+      Direction dir,
+      MapLocation curLoc,
+      int range) throws GameActionException
   {
-    if(noBound(type)) {
-      MapLocation loc = curLoc.add(dir, range);
-      if (rc.onTheMap(loc)) {
+    MapLocation loc = curLoc.add(dir, range);
+    if(rc.onTheMap(loc)) {
+      if(noBound(type)) {
         bounds[type.ordinal()] = loc.y;
+        return dir;
       }
     }
+    return Direction.OMNI;
   }
 
   private boolean noBound(Type type) {

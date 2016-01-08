@@ -21,26 +21,4 @@ public abstract class BaseUnit implements Unit {
   public void update() {
 
   }
-
-  public RobotInfo safeSenseRobotAtLocation(MapLocation loc) {
-    try {
-      if(rc.canSenseLocation(loc)) {
-        return rc.senseRobotAtLocation(loc);
-      }
-    }
-    catch (GameActionException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  public boolean safeOnTheMap(MapLocation loc) {
-    try {
-      return rc.onTheMap(loc);
-    }
-    catch (GameActionException e) {
-      e.printStackTrace();
-    }
-    return false;
-  }
 }

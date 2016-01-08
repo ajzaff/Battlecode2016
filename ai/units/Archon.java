@@ -9,6 +9,7 @@ import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
+import team137.ai.tables.Bounds;
 import team137.ai.tables.Rubble;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public class Archon extends BaseUnit {
   ///////////// "SHARED" FIELDS
 
   private static final double[] RUBBLE_MAP = Rubble.defaultMap();
+  private static final int SENSOR_RADIUS = (int) Math.sqrt(ARCHON.sensorRadiusSquared);
 
   ///////////// ROBOT CONSTANT FIELDS
 
@@ -27,10 +29,13 @@ public class Archon extends BaseUnit {
 
   ///////////// OPERATION FIELDS
 
+  private final Bounds bounds;
+  private Direction bounceDir;
 
   public Archon(RobotController rc) {
     super(rc);
     prioritySet = new ArchonPrioritySet();
+    bounds = Bounds.newBounds();
     team = rc.getTeam();
     rand = new Random(rc.getID());
   }
@@ -52,8 +57,8 @@ public class Archon extends BaseUnit {
 
     try {
 
-//      for(MapLocation loc : localTiles) {
-//      }
+      avoidWalls(curLoc);
+
 
       RobotInfo[] localRobots = rc.senseNearbyRobots();
 
@@ -83,6 +88,17 @@ public class Archon extends BaseUnit {
     // DECAY PRIORITIES
 
     prioritySet.update();       // update priority map
+  }
+
+  private void avoidWalls(MapLocation curLoc) throws GameActionException {
+    Direction d = bounds.update(rc, curLoc, SENSOR_RADIUS);
+    rc.setIndicatorString(2, "" + d);
+    if(d != Direction.OMNI && d != Direction.NONE) {
+      bounceDir = d;
+    }
+    if(bounceDir != null) {
+      prioritySet.putPriority(MoveAction.fromDirection(bounceDir), Priority.DEFAULT_PRIORITY);
+    }
   }
 
   private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
@@ -128,6 +144,9 @@ public class Archon extends BaseUnit {
   }
 
   public void checkEnemy(MapLocation curLoc, RobotInfo robotInfo) throws GameActionException {
+
+
+
     if(robotInfo.team != team && robotInfo.team != Team.NEUTRAL) {
       Direction dirFromLoc = curLoc.directionTo(robotInfo.location).opposite();
       Action action;
