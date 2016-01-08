@@ -1,7 +1,6 @@
 package team137.ai.units;
 
-import battlecode.common.RobotController;
-import team137.ai.units.BaseUnit;
+import battlecode.common.*;
 
 public class Guard extends BaseUnit {
   public Guard(RobotController rc) {

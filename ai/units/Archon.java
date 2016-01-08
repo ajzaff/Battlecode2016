@@ -1,7 +1,6 @@
 package team137.ai.units;
 
 import static battlecode.common.RobotType.*;
-import static battlecode.common.MapLocation.getAllMapLocationsWithinRadiusSq;
 
 import battlecode.common.*;
 import team137.ai.actions.Action;
@@ -10,8 +9,10 @@ import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
 import team137.ai.tables.Bounds;
+import team137.ai.tables.robots.DefaultFleeWeights;
+import team137.ai.tables.robots.FleeWeights;
+import team137.ai.tables.robots.RobotTable;
 import team137.ai.tables.Rubble;
-import team137.ai.units.BaseUnit;
 
 import java.util.*;
 
@@ -19,6 +20,7 @@ public class Archon extends BaseUnit {
 
   ///////////// "SHARED" FIELDS
 
+  public static final RobotTable<FleeWeights.Row> FLEE_TABLE = DefaultFleeWeights.getInstance();
   private static final double[] RUBBLE_MAP = Rubble.defaultMap();
   private static final int SENSOR_RADIUS = (int) Math.sqrt(ARCHON.sensorRadiusSquared);
 
@@ -47,10 +49,10 @@ public class Archon extends BaseUnit {
     // TURN VARIABLES
 
     MapLocation curLoc = rc.getLocation();
-    MapLocation[] localTiles = getAllMapLocationsWithinRadiusSq
-        (curLoc, ARCHON.sensorRadiusSquared);               // local tiles
-    MapLocation[] adjacentTiles = getAllMapLocationsWithinRadiusSq
-        (curLoc, 2);                                        // adjacent tiles
+//    MapLocation[] localTiles = getAllMapLocationsWithinRadiusSq
+//        (curLoc, ARCHON.sensorRadiusSquared);               // local tiles
+//    MapLocation[] adjacentTiles = getAllMapLocationsWithinRadiusSq
+//        (curLoc, 2);                                        // adjacent tiles
     Map<Direction, Double> rubbleDirMap = new HashMap<>(8); // adjacent rubble multipliers (for path-finding)
     boolean adjacentNeutral = false;                        // Activation flag
 
@@ -72,7 +74,7 @@ public class Archon extends BaseUnit {
       // BEGIN ACTUATION
 
       rc.setIndicatorString(0, prioritySet.toString(7));  // debug
-      rc.setIndicatorString(1, "" + rubbleDirMap);
+//      rc.setIndicatorString(1, "" + rubbleDirMap);
       if(! adjacentNeutral) {
         prioritySet.forbidActivate();                     // apply neutral fence
       }
@@ -93,7 +95,6 @@ public class Archon extends BaseUnit {
 
   private void avoidWalls(MapLocation curLoc) throws GameActionException {
     Direction d = bounds.update(rc, curLoc, SENSOR_RADIUS);
-    rc.setIndicatorString(2, "" + d);
     if(d != Direction.OMNI && d != Direction.NONE) {
       bounceDir = d;
     }
@@ -127,13 +128,13 @@ public class Archon extends BaseUnit {
   public boolean checkNeutrals(MapLocation curLoc, RobotInfo robotInfo) throws GameActionException {
     // returns flag for ``adjacentNeutral``
     boolean adjacentNeutral = false;
-    if(robotInfo.team == Team.NEUTRAL) {
+    if(! robotInfo.team.isPlayer()) {
       Direction dirToLoc = curLoc.directionTo(robotInfo.location);
       Action action;
       Priority priority;
       if (curLoc.isAdjacentTo(robotInfo.location)) {
         action = ActivateAction.fromDirection(dirToLoc);
-        priority = Priority.LEVEL16_PRIORITY;
+        priority = Priority.LEVEL8_PRIORITY;
         adjacentNeutral = true;
       } else {
         action = MoveAction.fromDirection(dirToLoc);
@@ -144,15 +145,17 @@ public class Archon extends BaseUnit {
     return adjacentNeutral;
   }
 
-  public void checkEnemy(MapLocation curLoc, RobotInfo robotInfo) throws GameActionException {
-    Map<Direction, Double> weightMap = new HashMap<>(8);
+  public void checkEnemy(
+      MapLocation curLoc,
+      RobotInfo robotInfo) throws GameActionException
+  {
     if(robotInfo.team != team && robotInfo.team != Team.NEUTRAL) {
       Direction dirToLoc = curLoc.directionTo(robotInfo.location);
-      weightMap.put(dirToLoc, weightMap.getOrDefault(dirToLoc, 0.0) - 1);
-    }
-    Direction dir;
-    for(Direction dir : weightMap.keySet()) {
-
+      double x0 = FLEE_TABLE.get(robotInfo.type).x0;
+      double x1 = FLEE_TABLE.get(robotInfo.type).x1;
+      prioritySet.addPriority(MoveAction.fromDirection(dirToLoc), x0 * Priority.LEVEL4_PRIORITY.value);
+      prioritySet.addPriority(MoveAction.fromDirection(dirToLoc.rotateLeft()), x1 * Priority.LEVEL4_PRIORITY.value);
+      prioritySet.addPriority(MoveAction.fromDirection(dirToLoc.rotateRight()), x1 * Priority.LEVEL4_PRIORITY.value);
     }
   }
 }

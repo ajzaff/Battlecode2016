@@ -109,12 +109,18 @@ public class PrioritySet {
     putPriority(action, priority.value);
   }
 
-  public void subPriority(Action action, Priority priority) {
-    putPriority(action, getPriority(action) - priority.value);
+  public void addPriority(Action action, Priority priority) {
+    addPriority(action, priority.value);
   }
 
-  public void addPriority(Action action, Priority priority) {
-    putPriority(action, getPriority(action) + priority.value);
+  public void addPriority(Action action, double priority) {
+    putPriority(action, getPriority(action) + priority);
+  }
+
+  public void putIfHigher(Action action, Priority priority) {
+    if(priority.value > getPriority(action)) {
+      putPriority(action, priority);
+    }
   }
 
   protected Entry peek(Random rand) {

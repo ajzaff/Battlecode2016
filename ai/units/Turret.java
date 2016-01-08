@@ -4,13 +4,15 @@ import battlecode.common.*;
 import team137.ai.actions.AttackAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.TurretPrioritySet;
-import team137.ai.tables.RobotTable;
+import team137.ai.tables.robots.FleeWeights;
+import team137.ai.tables.robots.RobotTable;
+import team137.ai.tables.robots.UniformRobotWeights;
 
 import java.util.Random;
 
 public class Turret extends BaseUnit {
 
-  private static final RobotTable PREFS = RobotTable.defaultPrefs();
+  private static final RobotTable<Double> PREFS = UniformRobotWeights.getInstance();
 
   private final Random rand;
   private final TurretPrioritySet prioritySet;
@@ -26,10 +28,6 @@ public class Turret extends BaseUnit {
     MapLocation curLoc = rc.getLocation();
     RobotInfo[] localHostiles = rc.senseHostileRobots(curLoc, RobotType.TURRET.sensorRadiusSquared);
 
-    if(! rc.isCoreReady()) {
-      return;
-    }
-
     // traverse hostiles
     for(RobotInfo hostile : localHostiles) {
       double priority = Priority.LEVEL8_PRIORITY.value * PREFS.get(hostile.type);
@@ -39,7 +37,9 @@ public class Turret extends BaseUnit {
     }
 
     try {
-      prioritySet.fairAct(rc, rand);
+      if(rc.isCoreReady() && rc.isWeaponReady()) {
+        prioritySet.fairAct(rc, rand);
+      }
     }
     catch (GameActionException e) {
       e.printStackTrace();

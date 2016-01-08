@@ -1,7 +1,6 @@
 package team137.collect;
 
-import battlecode.common.GameActionException;
-import battlecode.common.RobotController;
+import battlecode.common.*;
 import team137.ai.actions.Action;
 import team137.ai.actions.priority.Priority;
 
