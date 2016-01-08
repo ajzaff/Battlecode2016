@@ -9,8 +9,6 @@ import team137.ai.actions.priority.units.ArchonPrioritySet;
 import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import static battlecode.common.RobotType.ARCHON;
@@ -86,7 +84,6 @@ public class Archon extends MovableUnit {
 
         prioritySet.update();                             // update priority map
       }
-
     }
     catch (GameActionException e) {
       e.printStackTrace();
