@@ -123,6 +123,12 @@ public class PrioritySet {
     }
   }
 
+  public void putIfLower(Action action, Priority priority) {
+    if(priority.value < getPriority(action)) {
+      putPriority(action, priority);
+    }
+  }
+
   protected Entry peek(Random rand) {
     if(! getPrioritySet().isEmpty()) {
       return getPrioritySet().last();

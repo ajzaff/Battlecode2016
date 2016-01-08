@@ -1,5 +1,6 @@
 package team137.ai.units;
 
+import static battlecode.common.MapLocation.getAllMapLocationsWithinRadiusSq;
 import static battlecode.common.RobotType.*;
 
 import battlecode.common.*;
@@ -62,7 +63,6 @@ public class Archon extends BaseUnit {
 
       avoidWalls(curLoc);
 
-
       RobotInfo[] localRobots = rc.senseNearbyRobots();
 
       // do stuff with local robots!
@@ -74,23 +74,26 @@ public class Archon extends BaseUnit {
       // BEGIN ACTUATION
 
       rc.setIndicatorString(0, prioritySet.toString(7));  // debug
-//      rc.setIndicatorString(1, "" + rubbleDirMap);
-      if(! adjacentNeutral) {
+      rc.setIndicatorString(1, "" + rubbleDirMap);
+      if(adjacentNeutral) {
+        prioritySet.clearMotion();
+      }
+      else {
         prioritySet.forbidActivate();                     // apply neutral fence
       }
       applyRubbleMap(rubbleDirMap);                       // apply rubble map!
       if(rc.isCoreReady()) {
         prioritySet.fairAct(rc, rand);                    // act!
+
+        // DECAY PRIORITIES
+
+        prioritySet.update();                             // update priority map
       }
 
     }
     catch (GameActionException e) {
       e.printStackTrace();
     }
-
-    // DECAY PRIORITIES
-
-    prioritySet.update();       // update priority map
   }
 
   private void avoidWalls(MapLocation curLoc) throws GameActionException {
@@ -117,13 +120,13 @@ public class Archon extends BaseUnit {
     }
   }
 
-  public void checkRubble(Map<Direction, Double> rubbleDirMap, MapLocation[] adjacentTiles, MapLocation curLoc) {
-    for(MapLocation loc : adjacentTiles) {
-      double rubble = rc.senseRubble(loc);
-      Direction dir = curLoc.directionTo(loc);
-      rubbleDirMap.put(dir, Rubble.weight(RUBBLE_MAP, rubble));
-    }
-  }
+//  public void checkRubble(Map<Direction, Double> rubbleDirMap, MapLocation[] adjacentTiles, MapLocation curLoc) {
+//    for(MapLocation loc : adjacentTiles) {
+//      double rubble = rc.senseRubble(loc);
+//      Direction dir = curLoc.directionTo(loc);
+//      rubbleDirMap.put(dir, Rubble.weight(RUBBLE_MAP, rubble));
+//    }
+//  }
 
   public boolean checkNeutrals(MapLocation curLoc, RobotInfo robotInfo) throws GameActionException {
     // returns flag for ``adjacentNeutral``
