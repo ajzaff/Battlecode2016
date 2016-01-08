@@ -4,14 +4,13 @@ import battlecode.common.*;
 import team137.ai.actions.AttackAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.TurretPrioritySet;
-import team137.ai.tables.RobotPrefs;
-import team137.ai.units.BaseUnit;
+import team137.ai.tables.RobotTable;
 
 import java.util.Random;
 
 public class Turret extends BaseUnit {
 
-  private static final RobotPrefs PREFS = RobotPrefs.defaultPrefs();
+  private static final RobotTable PREFS = RobotTable.defaultPrefs();
 
   private final Random rand;
   private final TurretPrioritySet prioritySet;
@@ -33,7 +32,7 @@ public class Turret extends BaseUnit {
 
     // traverse hostiles
     for(RobotInfo hostile : localHostiles) {
-      double priority = Priority.LEVEL8_PRIORITY.value * PREFS.getPref(hostile.type);
+      double priority = Priority.LEVEL8_PRIORITY.value * PREFS.get(hostile.type);
       if(rc.canAttackLocation(hostile.location)) {
         prioritySet.putPriority(AttackAction.target(hostile.location), priority);
       }
