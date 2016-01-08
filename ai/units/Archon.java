@@ -6,10 +6,8 @@ import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
-import team137.ai.tables.Bounds;
 import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
-import team137.ai.tables.robots.RobotTable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,15 +36,9 @@ public class Archon extends MovableUnit {
   private final ArchonPrioritySet prioritySet; // priority-queue-like structure
   private final Random rand;                   // random number generator
 
-  ///////////// OPERATION FIELDS
-
-  private final Bounds bounds;
-  private Direction curDir;
-
   public Archon(RobotController rc) {
     super(rc);
     prioritySet = new ArchonPrioritySet();
-    bounds = Bounds.newBounds();
     rand = new Random(rc.getID());
   }
 
@@ -60,14 +52,14 @@ public class Archon extends MovableUnit {
 //        (curLoc, ARCHON.sensorRadiusSquared);               // local tiles
 //    MapLocation[] adjacentTiles = getAllMapLocationsWithinRadiusSq
 //        (curLoc, 2);                                        // adjacent tiles
-    Map<Direction, Double> rubbleDirMap = new HashMap<>(8); // adjacent rubble multipliers (for path-finding)
+//    Map<Direction, Double> rubbleDirMap = new HashMap<>(8); // adjacent rubble multipliers (for path-finding)
     boolean adjacentNeutral = false;                        // Activation flag
 
     // START TURN
 
     try {
 
-      avoidWalls(curLoc);
+      avoidWalls(prioritySet, curLoc, SENSOR_RADIUS);
 
       RobotInfo[] localRobots = rc.senseNearbyRobots();
 
@@ -101,15 +93,7 @@ public class Archon extends MovableUnit {
     }
   }
 
-  private void avoidWalls(MapLocation curLoc) throws GameActionException {
-    Direction d = bounds.update(rc, curLoc, SENSOR_RADIUS);
-    if(d != Direction.OMNI && d != Direction.NONE) {
-      curDir = d;
-    }
-    if(curDir != null) {
-      prioritySet.putPriority(MoveAction.fromDirection(curDir), Priority.DEFAULT_PRIORITY);
-    }
-  }
+
 
 //  private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
 //    for(Direction dir : rubbleDirMap.keySet()) {
