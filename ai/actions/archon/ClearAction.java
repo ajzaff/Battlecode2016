@@ -15,13 +15,13 @@ public final class ClearAction extends BaseAction {
   static {
     actionMap = new HashMap<>(8);
     actionMap.put(Direction.NORTH, new ClearAction(Direction.NORTH, "Xn"));
-    actionMap.put(Direction.NORTH_EAST, new ClearAction(Direction.NORTH, "Xne"));
-    actionMap.put(Direction.EAST, new ClearAction(Direction.NORTH, "Xe"));
-    actionMap.put(Direction.SOUTH_EAST, new ClearAction(Direction.NORTH, "Xse"));
-    actionMap.put(Direction.SOUTH, new ClearAction(Direction.NORTH, "Xs"));
-    actionMap.put(Direction.SOUTH_WEST, new ClearAction(Direction.NORTH, "Xsw"));
-    actionMap.put(Direction.WEST, new ClearAction(Direction.NORTH, "Xw"));
-    actionMap.put(Direction.NORTH_WEST, new ClearAction(Direction.NORTH, "Xnw"));
+    actionMap.put(Direction.NORTH_EAST, new ClearAction(Direction.NORTH_EAST, "Xne"));
+    actionMap.put(Direction.EAST, new ClearAction(Direction.EAST, "Xe"));
+    actionMap.put(Direction.SOUTH_EAST, new ClearAction(Direction.SOUTH_EAST, "Xse"));
+    actionMap.put(Direction.SOUTH, new ClearAction(Direction.SOUTH, "Xs"));
+    actionMap.put(Direction.SOUTH_WEST, new ClearAction(Direction.SOUTH_WEST, "Xsw"));
+    actionMap.put(Direction.WEST, new ClearAction(Direction.WEST, "Xw"));
+    actionMap.put(Direction.NORTH_WEST, new ClearAction(Direction.NORTH_WEST, "Xnw"));
   }
 
   private final Direction dir;

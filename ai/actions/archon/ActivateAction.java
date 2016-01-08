@@ -16,13 +16,13 @@ public class ActivateAction extends BaseAction {
   static {
     actionMap = new HashMap<>(8);
     actionMap.put(Direction.NORTH, new ActivateAction(Direction.NORTH, "+n"));
-    actionMap.put(Direction.NORTH_EAST, new ActivateAction(Direction.NORTH, "+ne"));
-    actionMap.put(Direction.EAST, new ActivateAction(Direction.NORTH, "+e"));
-    actionMap.put(Direction.SOUTH_EAST, new ActivateAction(Direction.NORTH, "+se"));
-    actionMap.put(Direction.SOUTH, new ActivateAction(Direction.NORTH, "+s"));
-    actionMap.put(Direction.SOUTH_WEST, new ActivateAction(Direction.NORTH, "+sw"));
-    actionMap.put(Direction.WEST, new ActivateAction(Direction.NORTH, "+w"));
-    actionMap.put(Direction.NORTH_WEST, new ActivateAction(Direction.NORTH, "+nw"));
+    actionMap.put(Direction.NORTH_EAST, new ActivateAction(Direction.NORTH_EAST, "+ne"));
+    actionMap.put(Direction.EAST, new ActivateAction(Direction.EAST, "+e"));
+    actionMap.put(Direction.SOUTH_EAST, new ActivateAction(Direction.SOUTH_EAST, "+se"));
+    actionMap.put(Direction.SOUTH, new ActivateAction(Direction.SOUTH, "+s"));
+    actionMap.put(Direction.SOUTH_WEST, new ActivateAction(Direction.SOUTH_WEST, "+sw"));
+    actionMap.put(Direction.WEST, new ActivateAction(Direction.WEST, "+w"));
+    actionMap.put(Direction.NORTH_WEST, new ActivateAction(Direction.NORTH_WEST, "+nw"));
   }
 
   private final Direction dir;

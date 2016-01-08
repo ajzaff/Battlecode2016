@@ -18,13 +18,13 @@ public final class MoveAction extends BaseAction {
     actionMap.put(Direction.NONE, new MoveAction(Direction.OMNI, "."));
     actionMap.put(Direction.OMNI, new MoveAction(Direction.OMNI, "."));
     actionMap.put(Direction.NORTH, new MoveAction(Direction.NORTH, "^"));
-    actionMap.put(Direction.NORTH_EAST, new MoveAction(Direction.NORTH, "/^"));
-    actionMap.put(Direction.EAST, new MoveAction(Direction.NORTH, ">"));
-    actionMap.put(Direction.SOUTH_EAST, new MoveAction(Direction.NORTH, "\\v"));
-    actionMap.put(Direction.SOUTH, new MoveAction(Direction.NORTH, "v"));
-    actionMap.put(Direction.SOUTH_WEST, new MoveAction(Direction.NORTH, "v/"));
-    actionMap.put(Direction.WEST, new MoveAction(Direction.NORTH, "<"));
-    actionMap.put(Direction.NORTH_WEST, new MoveAction(Direction.NORTH, "^\\"));
+    actionMap.put(Direction.NORTH_EAST, new MoveAction(Direction.NORTH_EAST, "/^"));
+    actionMap.put(Direction.EAST, new MoveAction(Direction.EAST, ">"));
+    actionMap.put(Direction.SOUTH_EAST, new MoveAction(Direction.SOUTH_EAST, "\\v"));
+    actionMap.put(Direction.SOUTH, new MoveAction(Direction.SOUTH, "v"));
+    actionMap.put(Direction.SOUTH_WEST, new MoveAction(Direction.SOUTH_WEST, "v/"));
+    actionMap.put(Direction.WEST, new MoveAction(Direction.WEST, "<"));
+    actionMap.put(Direction.NORTH_WEST, new MoveAction(Direction.NORTH_WEST, "^\\"));
   }
 
   private static final Random RAND = new Random(1337);
