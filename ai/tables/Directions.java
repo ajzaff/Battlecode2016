@@ -12,7 +12,7 @@ public final class Directions {
     cardinalDirections = Arrays.copyOfRange(Direction.values(), 0, 8);
   }
 
-  public static final Direction[] cardinals() {
+  public static Direction[] cardinals() {
     return cardinalDirections;
   }
 }

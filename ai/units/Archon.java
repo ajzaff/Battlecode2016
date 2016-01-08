@@ -11,6 +11,7 @@ import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
 import team137.ai.tables.Bounds;
 import team137.ai.tables.Rubble;
+import team137.ai.units.BaseUnit;
 
 import java.util.*;
 
@@ -144,16 +145,14 @@ public class Archon extends BaseUnit {
   }
 
   public void checkEnemy(MapLocation curLoc, RobotInfo robotInfo) throws GameActionException {
-
-
-
+    Map<Direction, Double> weightMap = new HashMap<>(8);
     if(robotInfo.team != team && robotInfo.team != Team.NEUTRAL) {
-      Direction dirFromLoc = curLoc.directionTo(robotInfo.location).opposite();
-      Action action;
-      Priority priority;
-      action = MoveAction.fromDirection(dirFromLoc);
-      priority = Priority.DEFAULT_PRIORITY;
-      prioritySet.addPriority(action, priority);
+      Direction dirToLoc = curLoc.directionTo(robotInfo.location);
+      weightMap.put(dirToLoc, weightMap.getOrDefault(dirToLoc, 0.0) - 1);
+    }
+    Direction dir;
+    for(Direction dir : weightMap.keySet()) {
+
     }
   }
 }
