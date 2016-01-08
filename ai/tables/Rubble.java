@@ -1,4 +1,4 @@
-package team137.ai.tables.rubble;
+package team137.ai.tables;
 
 public final class Rubble {
 

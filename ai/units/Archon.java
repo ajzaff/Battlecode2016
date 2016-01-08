@@ -9,7 +9,7 @@ import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
-import team137.ai.tables.rubble.Rubble;
+import team137.ai.tables.Rubble;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ public class Archon extends BaseUnit {
 
   ///////////// ROBOT CONSTANT FIELDS
 
-  private final ArchonPrioritySet priorityMap; // priority-queue-like structure
+  private final ArchonPrioritySet prioritySet; // priority-queue-like structure
   private final Random rand;                   // random number generator
   private final Team team;                     // our team
 
@@ -30,7 +30,7 @@ public class Archon extends BaseUnit {
 
   public Archon(RobotController rc) {
     super(rc);
-    priorityMap = new ArchonPrioritySet();
+    prioritySet = new ArchonPrioritySet();
     team = rc.getTeam();
     rand = new Random(rc.getID());
   }
@@ -65,14 +65,14 @@ public class Archon extends BaseUnit {
 
       // BEGIN ACTUATION
 
-      rc.setIndicatorString(0, priorityMap.toString(7));  // debug
+      rc.setIndicatorString(0, prioritySet.toString(7));  // debug
       rc.setIndicatorString(1, "" + rubbleDirMap);
       if(! adjacentNeutral) {
-        priorityMap.forbidActivate();                     // apply neutral fence
+        prioritySet.forbidActivate();                     // apply neutral fence
       }
       applyRubbleMap(rubbleDirMap);                       // apply rubble map!
       if(rc.isCoreReady()) {
-        priorityMap.fairAct(rc, rand);                    // act!
+        prioritySet.fairAct(rc, rand);                    // act!
       }
 
     }
@@ -82,18 +82,18 @@ public class Archon extends BaseUnit {
 
     // DECAY PRIORITIES
 
-    priorityMap.update();       // update priority map
+    prioritySet.update();       // update priority map
   }
 
   private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
     for(Direction dir : rubbleDirMap.keySet()) {
       Action action = MoveAction.fromDirection(dir);
-      double oldValue = priorityMap.getPriority(action);
+      double oldValue = prioritySet.getPriority(action);
       if(oldValue > Priority.FORBID_PRIORITY.value) {
         double rubble = rubbleDirMap.get(dir);
         double newValue = Rubble.weight(RUBBLE_MAP, rubble) * oldValue;
         if(newValue != oldValue) {
-          priorityMap.putPriority(MoveAction.fromDirection(dir), newValue);
+          prioritySet.putPriority(MoveAction.fromDirection(dir), newValue);
         }
       }
     }
@@ -116,13 +116,13 @@ public class Archon extends BaseUnit {
       Priority priority;
       if (curLoc.isAdjacentTo(robotInfo.location)) {
         action = ActivateAction.fromDirection(dirToLoc);
-        priority = Priority.LEVEL8_PRIORITY;
+        priority = Priority.LEVEL16_PRIORITY;
         adjacentNeutral = true;
       } else {
         action = MoveAction.fromDirection(dirToLoc);
         priority = Priority.DEFAULT_PRIORITY;
       }
-      priorityMap.addPriority(action, priority);
+      prioritySet.addPriority(action, priority);
     }
     return adjacentNeutral;
   }
@@ -133,8 +133,8 @@ public class Archon extends BaseUnit {
       Action action;
       Priority priority;
       action = MoveAction.fromDirection(dirFromLoc);
-      priority = Priority.LEVEL4_PRIORITY;
-      priorityMap.addPriority(action, priority);
+      priority = Priority.DEFAULT_PRIORITY;
+      prioritySet.addPriority(action, priority);
     }
   }
 }
