@@ -13,6 +13,12 @@ public abstract class RobotTable<V> {
     this.prefs = prefs;
   }
 
+  public V put(RobotType type, V value) {
+    V res = prefs[type.ordinal()];
+    prefs[type.ordinal()] = value;
+    return res;
+  }
+
   public V get(RobotType type) {
     return prefs[type.ordinal()];
   }

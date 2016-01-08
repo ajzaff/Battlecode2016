@@ -105,6 +105,10 @@ public class PrioritySet {
     }
   }
 
+  public void putPriorityButPermit(Action action, Priority priority) {
+    putPriority(action, Math.max(priority.value, Priority.LOWEST_PRIORITY.value));
+  }
+
   public void putPriority(Action action, Priority priority) {
     putPriority(action, priority.value);
   }
@@ -114,7 +118,15 @@ public class PrioritySet {
   }
 
   public void addPriority(Action action, double priority) {
-    putPriority(action, getPriority(action) + priority);
+    if(priority != 0) {
+      putPriority(action, getPriority(action) + priority);
+    }
+  }
+
+  public void addPriorityButPermit(Action action, double priority) {
+    if(priority != 0) {
+      putPriority(action, Math.max(getPriority(action) + priority, Priority.LOWEST_PRIORITY.value));
+    }
   }
 
   public void putIfHigher(Action action, Priority priority) {

@@ -1,6 +1,5 @@
 package team137.ai.units;
 
-import static battlecode.common.MapLocation.getAllMapLocationsWithinRadiusSq;
 import static battlecode.common.RobotType.*;
 
 import battlecode.common.*;
@@ -21,7 +20,14 @@ public class Archon extends BaseUnit {
 
   ///////////// "SHARED" FIELDS
 
-  public static final RobotTable<FleeWeights.Row> FLEE_TABLE = DefaultFleeWeights.getInstance();
+  public static final RobotTable<FleeWeights.Row> FLEE_TABLE = FleeWeights.newInstance();
+
+
+  static {
+    // CUSTOMIZE FLEE_TABLE
+    FLEE_TABLE.put(ZOMBIEDEN, FleeWeights.Row.getNull());
+  }
+
   private static final double[] RUBBLE_MAP = Rubble.defaultMap();
   private static final int SENSOR_RADIUS = (int) Math.sqrt(ARCHON.sensorRadiusSquared);
 
@@ -34,7 +40,7 @@ public class Archon extends BaseUnit {
   ///////////// OPERATION FIELDS
 
   private final Bounds bounds;
-  private Direction bounceDir;
+  private Direction curDir;
 
   public Archon(RobotController rc) {
     super(rc);
@@ -74,14 +80,13 @@ public class Archon extends BaseUnit {
       // BEGIN ACTUATION
 
       rc.setIndicatorString(0, prioritySet.toString(7));  // debug
-      rc.setIndicatorString(1, "" + rubbleDirMap);
       if(adjacentNeutral) {
         prioritySet.clearMotion();
       }
       else {
         prioritySet.forbidActivate();                     // apply neutral fence
       }
-      applyRubbleMap(rubbleDirMap);                       // apply rubble map!
+//      applyRubbleMap(rubbleDirMap);                       // apply rubble map!
       if(rc.isCoreReady()) {
         prioritySet.fairAct(rc, rand);                    // act!
 
@@ -99,26 +104,26 @@ public class Archon extends BaseUnit {
   private void avoidWalls(MapLocation curLoc) throws GameActionException {
     Direction d = bounds.update(rc, curLoc, SENSOR_RADIUS);
     if(d != Direction.OMNI && d != Direction.NONE) {
-      bounceDir = d;
+      curDir = d;
     }
-    if(bounceDir != null) {
-      prioritySet.putPriority(MoveAction.fromDirection(bounceDir), Priority.DEFAULT_PRIORITY);
+    if(curDir != null) {
+      prioritySet.putPriority(MoveAction.fromDirection(curDir), Priority.DEFAULT_PRIORITY);
     }
   }
 
-  private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
-    for(Direction dir : rubbleDirMap.keySet()) {
-      Action action = MoveAction.fromDirection(dir);
-      double oldValue = prioritySet.getPriority(action);
-      if(oldValue > Priority.FORBID_PRIORITY.value) {
-        double rubble = rubbleDirMap.get(dir);
-        double newValue = Rubble.weight(RUBBLE_MAP, rubble) * oldValue;
-        if(newValue != oldValue) {
-          prioritySet.putPriority(MoveAction.fromDirection(dir), newValue);
-        }
-      }
-    }
-  }
+//  private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
+//    for(Direction dir : rubbleDirMap.keySet()) {
+//      Action action = MoveAction.fromDirection(dir);
+//      double oldValue = prioritySet.getPriority(action);
+//      if(oldValue > Priority.FORBID_PRIORITY.value) {
+//        double rubble = rubbleDirMap.get(dir);
+//        double newValue = Rubble.weight(RUBBLE_MAP, rubble) * oldValue;
+//        if(newValue != oldValue) {
+//          prioritySet.putPriority(MoveAction.fromDirection(dir), newValue);
+//        }
+//      }
+//    }
+//  }
 
 //  public void checkRubble(Map<Direction, Double> rubbleDirMap, MapLocation[] adjacentTiles, MapLocation curLoc) {
 //    for(MapLocation loc : adjacentTiles) {
@@ -131,7 +136,7 @@ public class Archon extends BaseUnit {
   public boolean checkNeutrals(MapLocation curLoc, RobotInfo robotInfo) throws GameActionException {
     // returns flag for ``adjacentNeutral``
     boolean adjacentNeutral = false;
-    if(! robotInfo.team.isPlayer()) {
+    if(robotInfo.team == Team.NEUTRAL) {
       Direction dirToLoc = curLoc.directionTo(robotInfo.location);
       Action action;
       Priority priority;
@@ -156,9 +161,30 @@ public class Archon extends BaseUnit {
       Direction dirToLoc = curLoc.directionTo(robotInfo.location);
       double x0 = FLEE_TABLE.get(robotInfo.type).x0;
       double x1 = FLEE_TABLE.get(robotInfo.type).x1;
-      prioritySet.addPriority(MoveAction.fromDirection(dirToLoc), x0 * Priority.LEVEL4_PRIORITY.value);
-      prioritySet.addPriority(MoveAction.fromDirection(dirToLoc.rotateLeft()), x1 * Priority.LEVEL4_PRIORITY.value);
-      prioritySet.addPriority(MoveAction.fromDirection(dirToLoc.rotateRight()), x1 * Priority.LEVEL4_PRIORITY.value);
+      // forward
+      prioritySet.addPriorityButPermit(
+          MoveAction.fromDirection(dirToLoc),
+          x0 * Priority.LEVEL16_PRIORITY.value);
+      // left spill
+      prioritySet.addPriorityButPermit(
+          MoveAction.fromDirection(dirToLoc.rotateLeft()),
+          x1 * Priority.LEVEL16_PRIORITY.value);
+      // right spill
+      prioritySet.addPriorityButPermit(
+          MoveAction.fromDirection(dirToLoc.rotateRight()),
+          x1 * Priority.LEVEL16_PRIORITY.value);
+
+      // add priority to all other directions!
+      Direction endDir = dirToLoc.rotateRight();
+      dirToLoc = dirToLoc.rotateLeft();
+      while((dirToLoc = dirToLoc.rotateLeft()) != endDir) {
+        // add good direction
+        prioritySet.addPriority(
+            MoveAction.fromDirection(dirToLoc),
+            -x1 * Priority.LEVEL4_PRIORITY.value);
+      }
+
+      rc.setIndicatorString(1, "See dangerous " + robotInfo.type + "; x0="+x0 + "; x1="+x1);
     }
   }
 }

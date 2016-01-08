@@ -4,7 +4,7 @@ import battlecode.common.RobotType;
 
 public class DefaultFleeWeights extends FleeWeights {
 
-  public static final DefaultFleeWeights INSTANCE = new DefaultFleeWeights();
+  private static final DefaultFleeWeights INSTANCE = new DefaultFleeWeights();
 
   protected DefaultFleeWeights() {
     super(null);
