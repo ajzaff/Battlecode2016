@@ -67,19 +67,19 @@ public class Archon extends MovableUnit {
 
       // do stuff with local robots!
       for(RobotInfo robotInfo : localRobots) {
-        adjacentNeutral |= checkNeutrals(curLoc, robotInfo);
-        checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo);
+//        adjacentNeutral |= checkNeutrals(curLoc, robotInfo);
+//        checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo);
       }
 
       // BEGIN ACTUATION
 
-      rc.setIndicatorString(0, prioritySet.toString(7));  // debug
-      if(adjacentNeutral) {
-        prioritySet.clearMotion();
-      }
-      else {
-        prioritySet.forbidActivate();                     // apply neutral fence
-      }
+//      rc.setIndicatorString(0, prioritySet.toString(7));  // debug
+//      if(adjacentNeutral) {
+//        prioritySet.clearMotion();
+//      }
+//      else {
+//        prioritySet.forbidActivate();                     // apply neutral fence
+//      }
 //      applyRubbleMap(rubbleDirMap);                       // apply rubble map!
       if(rc.isCoreReady()) {
         prioritySet.fairAct(rc, rand);                    // act!
@@ -94,14 +94,14 @@ public class Archon extends MovableUnit {
     }
   }
 
-  private void checkBuild(MapLocation curLoc) {
-//    if(rc.hasBuildRequirements(GUARD)) {
-//      for(Direction dir : Directions.cardinals()) {
-//        if(rc.canBuild()) {
-//
-//        }
-//      }
-//    }
+  private void checkBuild(MapLocation curLoc) throws GameActionException {
+    if(rc.getTeamParts() > 100) {
+      for(Direction dir : Directions.cardinals()) {
+        if(rc.canBuild(dir, GUARD)) {
+          rc.build(dir, GUARD);
+        }
+      }
+    }
   }
 
 

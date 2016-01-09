@@ -20,4 +20,10 @@ public class MovablePrioritySet extends BasePrioritySet {
       putIfLower(MoveAction.fromDirection(dir), Priority.LOWEST_PRIORITY);
     }
   }
+
+  public void forbidMove() {
+    for(Direction dir : Directions.cardinals()) {
+      putIfLower(MoveAction.fromDirection(dir), Priority.FORBID_PRIORITY);
+    }
+  }
 }
