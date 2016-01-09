@@ -6,12 +6,14 @@ import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
+import team137.ai.tables.Directions;
 import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
 
 import java.util.Random;
 
 import static battlecode.common.RobotType.ARCHON;
+import static battlecode.common.RobotType.GUARD;
 import static battlecode.common.RobotType.ZOMBIEDEN;
 
 public class Archon extends MovableUnit {
@@ -57,6 +59,8 @@ public class Archon extends MovableUnit {
 
     try {
 
+      checkBuild(curLoc);
+
       avoidWalls(prioritySet, curLoc, SENSOR_RADIUS);
 
       RobotInfo[] localRobots = rc.senseNearbyRobots();
@@ -90,6 +94,15 @@ public class Archon extends MovableUnit {
     }
   }
 
+  private void checkBuild(MapLocation curLoc) {
+//    if(rc.hasBuildRequirements(GUARD)) {
+//      for(Direction dir : Directions.cardinals()) {
+//        if(rc.canBuild()) {
+//
+//        }
+//      }
+//    }
+  }
 
 
 //  private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
