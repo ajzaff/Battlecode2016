@@ -2,6 +2,7 @@ package team137.ai.units;
 
 import battlecode.common.*;
 import team137.ai.actions.Action;
+import team137.ai.actions.BuildAction;
 import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
@@ -63,13 +64,13 @@ public class Archon extends MovableUnit {
 
       avoidWalls(prioritySet, curLoc, SENSOR_RADIUS);
 
-      RobotInfo[] localRobots = rc.senseNearbyRobots();
+//      RobotInfo[] localRobots = rc.senseNearbyRobots();
 
       // do stuff with local robots!
-      for(RobotInfo robotInfo : localRobots) {
+//      for(RobotInfo robotInfo : localRobots) {
 //        adjacentNeutral |= checkNeutrals(curLoc, robotInfo);
 //        checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo);
-      }
+//      }
 
       // BEGIN ACTUATION
 
@@ -98,7 +99,7 @@ public class Archon extends MovableUnit {
     if(rc.getTeamParts() > 100) {
       for(Direction dir : Directions.cardinals()) {
         if(rc.canBuild(dir, GUARD)) {
-          rc.build(dir, GUARD);
+          prioritySet.putPriority(BuildAction.getInstance(GUARD, dir), Priority.LEVEL2_PRIORITY);
         }
       }
     }

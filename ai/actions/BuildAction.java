@@ -1,10 +1,12 @@
 package team137.ai.actions;
 
 import battlecode.common.Direction;
+import battlecode.common.GameActionException;
+import battlecode.common.RobotController;
 import battlecode.common.RobotType;
 import team137.ai.tables.Directions;
 
-public final class BuildAction {
+public final class BuildAction extends BaseAction {
 
   private static final BuildAction[][] ACTIONS;
 
@@ -22,11 +24,21 @@ public final class BuildAction {
   public final RobotType type;
 
   private BuildAction(RobotType type, Direction dir) {
+    super("*" + type);
     this.type = type;
     this.dir = dir;
   }
 
   public static BuildAction getInstance(RobotType type, Direction dir) {
     return ACTIONS[type.ordinal()][dir.ordinal()];
+  }
+
+  @Override
+  public boolean act(RobotController rc) throws GameActionException {
+    if(rc.canBuild(dir, type)) {
+      rc.build(dir, type);
+      return true;
+    }
+    return false;
   }
 }

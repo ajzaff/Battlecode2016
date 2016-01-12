@@ -9,10 +9,10 @@ public final class AttackUnits {
     double weakestSoFar = 0;
     MapLocation weakestLocation = null;
     for(RobotInfo r : robots){
-      double weakness = r.maxHealth-r.health;
+      double weakness = r.maxHealth - r.health;
       if(weakness > weakestSoFar){
         weakestLocation = r.location;
-        weakestSoFar=weakness;
+        weakestSoFar = weakness;
       }
     }
     return weakestLocation;

@@ -32,7 +32,7 @@ public class Guard extends MovableUnit {
 
     try {
 
-      if(rc.isCoreReady()) {
+      if(rc.isCoreReady() && rc.isWeaponReady()) {
 
         // SENSE ENEMIES
 
@@ -42,12 +42,13 @@ public class Guard extends MovableUnit {
 
         MapLocation attackLoc = AttackUnits.findWeakest(localEnemies);
 
-        if(attackLoc != null && rc.isWeaponReady()) {
+        if(attackLoc != null && rc.canAttackLocation(attackLoc)) {
           prioritySet.putPriority(AttackAction.target(attackLoc), Priority.LEVEL4_PRIORITY);
+          rc.attackLocation(attackLoc);
         }
 
-        prioritySet.fairAct(rc, rand);
-        prioritySet.update();
+//        prioritySet.fairAct(rc, rand);
+//        prioritySet.update();
       }
     }
     catch (GameActionException e) {
