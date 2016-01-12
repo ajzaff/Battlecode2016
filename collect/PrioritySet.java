@@ -46,8 +46,8 @@ public class PrioritySet implements Iterable<Action> {
     }
 
     @Override
-    public void remove() throws NotImplementedException {
-      throw new NotImplementedException();
+    public void remove() {
+      // not implemented.
     }
   }
 
@@ -194,12 +194,12 @@ public class PrioritySet implements Iterable<Action> {
       Action action = getMinimalSet().stream().skip(index).findFirst().get();
       return new Entry(action, Priority.LOWEST_PRIORITY.value);
     }
-    return new Entry(null, Priority.FORBID_PRIORITY.value);
+    return Entry.getForbidEntry();
   }
 
   @Override
   public Iterator<Action> iterator() {
-    return null;
+    return new SetIterator();
   }
 
   public String toString(int n) {
