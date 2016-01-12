@@ -5,7 +5,7 @@ import battlecode.common.RobotInfo;
 
 public final class AttackUnits {
 
-  public static MapLocation findWeakest(RobotInfo[] robots){
+  public static MapLocation findWeakest(RobotInfo[] robots) {
     double weakestSoFar = 0;
     MapLocation weakestLocation = null;
     for(RobotInfo r : robots){

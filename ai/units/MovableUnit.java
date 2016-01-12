@@ -36,7 +36,8 @@ public class MovableUnit extends BaseUnit {
       PrioritySet prioritySet,
       FleeWeights fleeWeights,
       MapLocation curLoc,
-      RobotInfo robotInfo) throws GameActionException
+      RobotInfo robotInfo,
+      Priority basePriority) throws GameActionException
   {
     if(robotInfo.team == Team.ZOMBIE || robotInfo.team.opponent() == team) {
       Direction dirToLoc = curLoc.directionTo(robotInfo.location);
@@ -45,29 +46,29 @@ public class MovableUnit extends BaseUnit {
       // forward
       prioritySet.addPriorityButPermit(
           MoveAction.fromDirection(dirToLoc),
-          x0 * Priority.LEVEL16_PRIORITY.value);
+          x0 * basePriority.value);
       // left spill
       prioritySet.addPriorityButPermit(
           MoveAction.fromDirection(dirToLoc.rotateLeft()),
-          x1 * Priority.LEVEL16_PRIORITY.value);
+          x1 * basePriority.value);
       // right spill
       prioritySet.addPriorityButPermit(
           MoveAction.fromDirection(dirToLoc.rotateRight()),
-          x1 * Priority.LEVEL16_PRIORITY.value);
+          x1 * basePriority.value);
 
       // backward
       Direction backward = dirToLoc.opposite();
       prioritySet.addPriorityButPermit(
           MoveAction.fromDirection(backward),
-          -x0 * Priority.LEVEL16_PRIORITY.value);
+          -x0 * basePriority.value);
       // backward left spill
       prioritySet.addPriorityButPermit(
           MoveAction.fromDirection(backward.rotateLeft()),
-          -x1 * Priority.LEVEL16_PRIORITY.value);
+          -x1 * basePriority.value);
       // backward right spill
       prioritySet.addPriorityButPermit(
           MoveAction.fromDirection(backward.rotateRight()),
-          -x1 * Priority.LEVEL16_PRIORITY.value);
+          -x1 * basePriority.value);
 
       rc.setIndicatorString(1, "See dangerous " + robotInfo.type + "; x0="+x0 + "; x1="+x1);
     }
