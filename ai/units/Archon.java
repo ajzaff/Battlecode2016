@@ -64,13 +64,13 @@ public class Archon extends MovableUnit {
 
       avoidWalls(prioritySet, curLoc, SENSOR_RADIUS);
 
-//      RobotInfo[] localRobots = rc.senseNearbyRobots();
+      RobotInfo[] localRobots = rc.senseNearbyRobots();
 
-      // do stuff with local robots!
-//      for(RobotInfo robotInfo : localRobots) {
-//        adjacentNeutral |= checkNeutrals(curLoc, robotInfo);
-//        checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo);
-//      }
+//       do stuff with local robots!
+      for(RobotInfo robotInfo : localRobots) {
+        adjacentNeutral |= checkNeutrals(curLoc, robotInfo);
+        checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo, Priority.DEFAULT_PRIORITY);
+      }
 
       // BEGIN ACTUATION
 
@@ -108,13 +108,13 @@ public class Archon extends MovableUnit {
 
 //  private void applyRubbleMap(Map<Direction, Double> rubbleDirMap) {
 //    for(Direction dir : rubbleDirMap.keySet()) {
-//      Action action = MoveAction.fromDirection(dir);
+//      Action action = MoveAction.inDirection(dir);
 //      double oldValue = prioritySet.getPriority(action);
 //      if(oldValue > Priority.FORBID_PRIORITY.value) {
 //        double rubble = rubbleDirMap.get(dir);
 //        double newValue = Rubble.weight(RUBBLE_MAP, rubble) * oldValue;
 //        if(newValue != oldValue) {
-//          prioritySet.putPriority(MoveAction.fromDirection(dir), newValue);
+//          prioritySet.putPriority(MoveAction.inDirection(dir), newValue);
 //        }
 //      }
 //    }
@@ -140,7 +140,7 @@ public class Archon extends MovableUnit {
         priority = Priority.LEVEL8_PRIORITY;
         adjacentNeutral = true;
       } else {
-        action = MoveAction.fromDirection(dirToLoc);
+        action = MoveAction.inDirection(dirToLoc);
         priority = Priority.DEFAULT_PRIORITY;
       }
       prioritySet.addPriority(action, priority);

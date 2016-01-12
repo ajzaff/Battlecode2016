@@ -75,7 +75,7 @@ public final class MoveAction extends BaseAction {
     return false;
   }
 
-  public static MoveAction fromDirection(Direction dir) {
+  public static MoveAction inDirection(Direction dir) {
     return actionMap.get(dir);
   }
 }

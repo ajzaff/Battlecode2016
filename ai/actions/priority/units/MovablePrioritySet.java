@@ -11,19 +11,19 @@ public class MovablePrioritySet extends BasePrioritySet {
   }
   protected void init() {
     for(Direction dir : Directions.cardinals()) {
-      putPriority(MoveAction.fromDirection(dir), Priority.LOWEST_PRIORITY);
+      putPriority(MoveAction.inDirection(dir), Priority.LOWEST_PRIORITY);
     }
   }
 
   public void clearMotion() {
     for(Direction dir : Directions.cardinals()) {
-      putIfLower(MoveAction.fromDirection(dir), Priority.LOWEST_PRIORITY);
+      putIfLower(MoveAction.inDirection(dir), Priority.LOWEST_PRIORITY);
     }
   }
 
   public void forbidMove() {
     for(Direction dir : Directions.cardinals()) {
-      putIfLower(MoveAction.fromDirection(dir), Priority.FORBID_PRIORITY);
+      putIfLower(MoveAction.inDirection(dir), Priority.FORBID_PRIORITY);
     }
   }
 }

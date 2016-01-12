@@ -15,8 +15,11 @@ public class AttackAction extends BaseAction {
 
   @Override
   public boolean act(RobotController rc) throws GameActionException {
-    rc.attackLocation(loc);
-    return true;
+    if(rc.canAttackLocation(loc)) {
+      rc.attackLocation(loc);
+      return true;
+    }
+    return false;
   }
 
   public static AttackAction target(MapLocation loc) {

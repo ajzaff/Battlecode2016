@@ -50,7 +50,7 @@ public final class ClearAction extends BaseAction {
     return false;
   }
 
-  public static ClearAction fromDirection(Direction dir) {
+  public static ClearAction inDirection(Direction dir) {
     return actionMap.get(dir);
   }
 }

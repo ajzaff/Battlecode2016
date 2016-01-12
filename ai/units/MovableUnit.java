@@ -28,7 +28,7 @@ public class MovableUnit extends BaseUnit {
       curDir = d;
     }
     if(curDir != null) {
-      prioritySet.putPriority(MoveAction.fromDirection(curDir), Priority.DEFAULT_PRIORITY);
+      prioritySet.putPriority(MoveAction.inDirection(curDir), Priority.DEFAULT_PRIORITY);
     }
   }
 
@@ -45,29 +45,29 @@ public class MovableUnit extends BaseUnit {
       double x1 = fleeWeights.get(robotInfo.type).x1;
       // forward
       prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(dirToLoc),
+          MoveAction.inDirection(dirToLoc),
           x0 * basePriority.value);
       // left spill
       prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(dirToLoc.rotateLeft()),
+          MoveAction.inDirection(dirToLoc.rotateLeft()),
           x1 * basePriority.value);
       // right spill
       prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(dirToLoc.rotateRight()),
+          MoveAction.inDirection(dirToLoc.rotateRight()),
           x1 * basePriority.value);
 
       // backward
       Direction backward = dirToLoc.opposite();
       prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(backward),
+          MoveAction.inDirection(backward),
           -x0 * basePriority.value);
       // backward left spill
       prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(backward.rotateLeft()),
+          MoveAction.inDirection(backward.rotateLeft()),
           -x1 * basePriority.value);
       // backward right spill
       prioritySet.addPriorityButPermit(
-          MoveAction.fromDirection(backward.rotateRight()),
+          MoveAction.inDirection(backward.rotateRight()),
           -x1 * basePriority.value);
 
       rc.setIndicatorString(1, "See dangerous " + robotInfo.type + "; x0="+x0 + "; x1="+x1);
