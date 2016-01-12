@@ -1,11 +1,13 @@
 package team137.collect;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import team137.ai.actions.Action;
 import team137.ai.actions.priority.Priority;
 
 import java.util.*;
+import java.util.function.Consumer;
 
-public class PrioritySet {
+public class PrioritySet implements Iterable<Action> {
 
   private final Set<Action> minimalSet; /* set of default priorities (disjoint with index) */
   private final Map<Action, Entry> priorityIndex; /* index of (non-default) priorities (index = set) */
@@ -17,7 +19,43 @@ public class PrioritySet {
     prioritySet = new TreeSet<>();
   }
 
+  class SetIterator implements Iterator<Action> {
+
+    private final Iterator<Entry> prioritySetIterator;
+    private final Iterator<Action> minimalSetIterator;
+
+    SetIterator() {
+      prioritySetIterator = prioritySet.iterator();
+      minimalSetIterator = minimalSet.iterator();
+    }
+
+    @Override
+    public boolean hasNext() {
+      return prioritySetIterator.hasNext() || minimalSetIterator.hasNext();
+    }
+
+    @Override
+    public Action next() throws NoSuchElementException {
+      if(prioritySetIterator.hasNext()) {
+        return prioritySetIterator.next().getKey();
+      }
+      if(minimalSetIterator.hasNext()) {
+        return minimalSetIterator.next();
+      }
+      throw new NoSuchElementException();
+    }
+
+    @Override
+    public void remove() throws NotImplementedException {
+      throw new NotImplementedException();
+    }
+  }
+
   public static class Entry implements Comparable<Entry> {
+
+    private static final Entry FORBID_ENTRY =
+        new Entry(null, Priority.FORBID_PRIORITY.value);
+
     private final Action key;
     private Double value;
     public Entry(Action key, Double value) {
@@ -43,8 +81,10 @@ public class PrioritySet {
     public String toString() {
       return key + "=" + String.format("%.2f", value);
     }
+    public static Entry getForbidEntry() {
+      return FORBID_ENTRY;
+    }
   }
-
   protected Set<Action> getMinimalSet() {
     return minimalSet;
   }
@@ -151,6 +191,11 @@ public class PrioritySet {
       return new Entry(action, Priority.LOWEST_PRIORITY.value);
     }
     return new Entry(null, Priority.FORBID_PRIORITY.value);
+  }
+
+  @Override
+  public Iterator<Action> iterator() {
+    return null;
   }
 
   public String toString(int n) {
