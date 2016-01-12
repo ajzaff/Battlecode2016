@@ -36,19 +36,24 @@ public class UnitPrioritySet extends PrioritySet {
   }
 
   public Action fairAct(RobotController rc, Random rand) throws GameActionException {
-    Entry bestEntry = peek(rand);
-    Action action = bestEntry.getKey();
 
-    if(action != null) {
-      action.act(rc);
+    // iterate through the ordered set
+    // to determine the best possible
+    // course of action...
 
-      // calculate new priority "decay" for fairness
-      if(bestEntry.getValue() > Priority.LOWEST_PRIORITY.value) {
-        putPriority(action, Priority.decay(getPriority(action)));
+    for(Action action : this) {
+      if(action.act(rc)) {
+
+        // calculate new priority "decay" for fairness
+        // return the chosen action.
+
+        putIfLower(action, Priority.decay(getPriority(action)));
+        return action;
       }
-
-      return action;
     }
+
+    // no action was permitted, or possible now-
+    // Return null.
 
     return null;
   }

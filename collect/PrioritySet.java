@@ -176,7 +176,11 @@ public class PrioritySet implements Iterable<Action> {
   }
 
   public void putIfLower(Action action, Priority priority) {
-    if(priority.value < getPriority(action)) {
+    putIfLower(action, priority.value);
+  }
+
+  public void putIfLower(Action action, double priority) {
+    if(priority < getPriority(action)) {
       putPriority(action, priority);
     }
   }
