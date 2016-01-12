@@ -48,6 +48,7 @@ public class Guard extends MovableUnit {
         else {
           Direction dirToLoc = curLoc.directionTo(attackLoc);
           prioritySet.putPriority(ClearAction.inDirection(dirToLoc), Priority.DEFAULT_PRIORITY);
+          prioritySet.putPriority(MoveAction.inDirection(dirToLoc), Priority.DEFAULT_PRIORITY);
         }
       }
       RobotInfo[] localFriends = rc.senseNearbyRobots(2, team);
