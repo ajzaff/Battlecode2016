@@ -24,7 +24,7 @@ public final class BuildAction extends BaseAction {
   public final RobotType type;
 
   private BuildAction(RobotType type, Direction dir) {
-    super("*" + type);
+    super("*" + type + "[" + dir + "]");
     this.type = type;
     this.dir = dir;
   }

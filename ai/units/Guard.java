@@ -6,7 +6,7 @@ import battlecode.common.*;
 import team137.ai.actions.Action;
 import team137.ai.actions.AttackAction;
 import team137.ai.actions.MoveAction;
-import team137.ai.actions.archon.ClearAction;
+import team137.ai.actions.ClearAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.GuardPrioritySet;
 import team137.ai.tables.Directions;
@@ -54,9 +54,7 @@ public class Guard extends MovableUnit {
       RobotInfo[] localFriends = rc.senseNearbyRobots(2, team);
       if(localFriends.length > 3) {
         for(Direction dir : Directions.cardinals()) {
-          if(rc.canMove(dir)) {
-            prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
-          }
+          prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
         }
       }
       if(rc.isCoreReady() && rc.isWeaponReady()) {

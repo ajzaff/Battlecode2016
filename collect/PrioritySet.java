@@ -25,7 +25,8 @@ public class PrioritySet implements Iterable<Action> {
     private final Iterator<Action> minimalSetIterator;
 
     SetIterator() {
-      prioritySetIterator = prioritySet.iterator();
+      prioritySetIterator = prioritySet.descendingIterator();
+      // TODO: make random iterator for minimal set (prevents predictable behavior)
       minimalSetIterator = minimalSet.iterator();
     }
 

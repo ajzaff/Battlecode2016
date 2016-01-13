@@ -74,7 +74,7 @@ public class Archon extends MovableUnit {
 
       // BEGIN ACTUATION
 
-//      rc.setIndicatorString(0, prioritySet.toString(7));  // debug
+      rc.setIndicatorString(0, prioritySet.toString(7));  // debug
 //      if(adjacentNeutral) {
 //        prioritySet.clearMotion();
 //      }

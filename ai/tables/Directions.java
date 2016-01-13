@@ -1,8 +1,11 @@
 package team137.ai.tables;
 
 import battlecode.common.Direction;
+import team137.collect.iter.RandomIterator;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Random;
 
 public final class Directions {
 
@@ -14,5 +17,9 @@ public final class Directions {
 
   public static Direction[] cardinals() {
     return cardinalDirections;
+  }
+
+  public static RandomIterator<Direction> fairCardinals(Random rand) {
+    return RandomIterator.newInstance(rand, cardinalDirections);
   }
 }
