@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-public class RandomIterator<E> implements Iterator<E> {
+public class RandomIterator<E> implements Iterator<E>, Iterable<E> {
 
   protected final Random rand;
 
@@ -46,5 +46,10 @@ public class RandomIterator<E> implements Iterator<E> {
 
   public static <E> RandomIterator<E> newInstance(Random rand, E[] array) {
     return new RandomIterator<>(rand, array);
+  }
+
+  @Override
+  public Iterator<E> iterator() {
+    return this;
   }
 }
