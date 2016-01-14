@@ -19,7 +19,7 @@ import java.util.Random;
 public class Soldier extends MovableUnit {
 
   private static final FleeWeights FLEE_TABLE = FleeWeights.newInstance();
-  private static final RobotWeights ATTACK_TABLE = RobotWeights.uniformWeights();
+  private static final RobotWeights ATTACK_TABLE = RobotWeights.newInstance();
 
   static {
     ATTACK_TABLE.put(ZOMBIEDEN, Priority.LEVEL8_PRIORITY.value);
