@@ -69,8 +69,6 @@ public class MovableUnit extends BaseUnit {
       prioritySet.addPriorityButPermit(
           MoveAction.inDirection(backward.rotateRight()),
           -x1 * basePriority.value);
-
-      rc.setIndicatorString(1, "See dangerous " + robotInfo.type + "; x0="+x0 + "; x1="+x1);
     }
   }
 }
