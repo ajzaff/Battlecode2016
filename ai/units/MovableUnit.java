@@ -52,31 +52,30 @@ public class MovableUnit extends BaseUnit {
           fleeBuffer.getOrDefault(dirToLoc, 0d) +
               x0 * basePriority.value);
       // left spill
-      fleeBuffer.put(
-          dirToLoc.rotateLeft(),
-          fleeBuffer.getOrDefault(dirToLoc, 0d) +
+      Direction rl = dirToLoc.rotateLeft();
+      fleeBuffer.put(rl,
+          fleeBuffer.getOrDefault(rl, 0d) +
               x1 * basePriority.value);
       // right spill
-      fleeBuffer.put(
-          dirToLoc.rotateRight(),
-          fleeBuffer.getOrDefault(dirToLoc, 0d) +
+      Direction rr = dirToLoc.rotateLeft();
+      fleeBuffer.put(rr,
+          fleeBuffer.getOrDefault(rr, 0d) +
               x1 * basePriority.value);
 
       // backward
       Direction backward = dirToLoc.opposite();
-      fleeBuffer.put(
-          backward,
-          fleeBuffer.getOrDefault(dirToLoc, 0d) +
+      fleeBuffer.put(backward,
+          fleeBuffer.getOrDefault(backward, 0d) +
               -x0 * basePriority.value);
       // backward left spill
-      fleeBuffer.put(
-          backward.rotateLeft(),
-          fleeBuffer.getOrDefault(dirToLoc, 0d) +
+      Direction brl = backward.rotateLeft();
+      fleeBuffer.put(brl,
+          fleeBuffer.getOrDefault(brl, 0d) +
               -x1 * basePriority.value);
       // backward right spill
-      fleeBuffer.put(
-          backward.rotateRight(),
-          fleeBuffer.getOrDefault(dirToLoc, 0d) +
+      Direction brr = backward.rotateRight();
+      fleeBuffer.put(brr,
+          fleeBuffer.getOrDefault(brr, 0d) +
               -x1 * basePriority.value);
     }
   }
