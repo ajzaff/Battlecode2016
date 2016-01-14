@@ -205,10 +205,15 @@ public class PrioritySet implements Iterable<Action> {
     int size = getPrioritySet().size();
     n = Math.min(n, size);
     StringBuilder sb = new StringBuilder("brain: " + n);
+    int i = 0;
     for(Action action : this) {
       sb.append(' ');
       sb.append(action);
+      sb.append('=');
       sb.append(getPriority(action));
+      sb.append(';');
+      if(i++ >= n)
+        break;
     }
     return sb.toString();
   }
