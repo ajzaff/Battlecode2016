@@ -204,9 +204,13 @@ public class PrioritySet implements Iterable<Action> {
   public String toString(int n) {
     int size = getPrioritySet().size();
     n = Math.min(n, size);
-    return "(" + size + ") " +
-        Arrays.toString(Arrays.copyOfRange(getPrioritySet()
-            .descendingSet().toArray(), 0, n));
+    StringBuilder sb = new StringBuilder("brain: " + n);
+    for(Action action : this) {
+      sb.append(' ');
+      sb.append(action);
+      sb.append(getPriority(action));
+    }
+    return sb.toString();
   }
 
   @Override
