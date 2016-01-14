@@ -99,7 +99,6 @@ public class Archon extends MovableUnit {
     for(RobotInfo robotInfo : localRobots) {
       checkNeutrals(curLoc, robotInfo);
       checkFlee(
-          prioritySet,
           FLEE_TABLE,
           curLoc,
           robotInfo,

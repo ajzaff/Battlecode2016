@@ -35,7 +35,6 @@ public class MovableUnit extends BaseUnit {
   }
 
   public void checkFlee(
-      PrioritySet prioritySet,
       FleeWeights fleeWeights,
       MapLocation curLoc,
       RobotInfo robotInfo,
