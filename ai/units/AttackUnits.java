@@ -8,7 +8,7 @@ import team137.ai.tables.robots.RobotWeights;
 
 public final class AttackUnits {
 
-  public static MapLocation findWeakest(
+  public static MapLocation findTarget(
       RobotInfo[] robots,
       RobotWeights attackTable,
       MapLocation curLoc,
@@ -22,7 +22,7 @@ public final class AttackUnits {
       if(r.team != team && r.team != Team.NEUTRAL) {
         double dist = curLoc.distanceSquaredTo(r.location);
         double priority = attackTable.get(r.type) * baseAggro.value;
-        double weakness = r.maxHealth - r.health;
+        double weakness = 1;//r.maxHealth - r.health;
         if(dist > 0) {
           double score = (priority * weakness) / dist;
           if(score > bestScore || bestLoc == null) {

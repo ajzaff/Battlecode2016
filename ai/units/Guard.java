@@ -42,7 +42,13 @@ public class Guard extends MovableUnit {
     RobotInfo[] localEnemies = rc.senseNearbyRobots(GUARD.sensorRadiusSquared);
 
     try {
-      MapLocation attackLoc = AttackUnits.findWeakest(localEnemies, ATTACK_TABLE, curLoc, Priority.LEVEL2_PRIORITY, team);
+      MapLocation attackLoc = AttackUnits.findTarget(
+          localEnemies,
+          ATTACK_TABLE,
+          curLoc,
+          Priority.LEVEL2_PRIORITY,
+          team);
+
       rc.setIndicatorString(0, prioritySet.toString());
       rc.setIndicatorString(1, "" + attackLoc);
 

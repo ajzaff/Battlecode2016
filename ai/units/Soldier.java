@@ -8,7 +8,6 @@ import team137.ai.actions.AttackAction;
 import team137.ai.actions.MoveAction;
 import team137.ai.actions.ClearAction;
 import team137.ai.actions.priority.Priority;
-import team137.ai.actions.priority.units.GuardPrioritySet;
 import team137.ai.actions.priority.units.SoldierPrioritySet;
 import team137.ai.tables.Directions;
 import team137.ai.tables.robots.FleeWeights;
@@ -38,7 +37,7 @@ public class Soldier extends MovableUnit {
     RobotInfo[] localEnemies = rc.senseNearbyRobots(SOLDIER.sensorRadiusSquared);
 
     try {
-      MapLocation attackLoc = AttackUnits.findWeakest(localEnemies, ATTACK_TABLE, curLoc, Priority.LEVEL2_PRIORITY, team);
+      MapLocation attackLoc = AttackUnits.findTarget(localEnemies, ATTACK_TABLE, curLoc, Priority.LEVEL2_PRIORITY, team);
       rc.setIndicatorString(0, prioritySet.toString());
       rc.setIndicatorString(1, "" + attackLoc);
 
