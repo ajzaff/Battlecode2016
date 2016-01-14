@@ -26,10 +26,10 @@ public class Archon extends MovableUnit {
 
   static {
     // CUSTOMIZE FLEE_TABLE
-    FLEE_TABLE.put(ZOMBIEDEN, FleeWeights.Row.getNull());
+    FLEE_TABLE.put(ZOMBIEDEN, FleeWeights.Row.newInstance(-.5, -.05));
   }
 
-  private static final double[] RUBBLE_MAP = Rubble.defaultMap();
+  private static final double[] RUBBLE_MAP = Rubble.map(1, .5, .125);
   private static final int SENSOR_RADIUS =
       (int) Math.sqrt(ARCHON.sensorRadiusSquared);
 
@@ -55,20 +55,22 @@ public class Archon extends MovableUnit {
     // START TURN
 
     try {
-
-      checkBuild(curLoc);
-
-      RobotInfo[] localRobots = rc.senseNearbyRobots();
-
-      checkLocals(curLoc, localRobots, fleeBuffer);
-
-      applyFleeBuffer(fleeBuffer);
-
-      // BEGIN ACTUATION
-
       rc.setIndicatorString(0, prioritySet.toString(7));  // debug
 
       if(rc.isCoreReady()) {
+
+        checkBuild(curLoc);
+
+        RobotInfo[] localRobots = rc.senseNearbyRobots();
+
+        checkLocals(curLoc, localRobots, fleeBuffer);
+
+        checkRubble(fleeBuffer, curLoc);
+
+        applyFleeBuffer(fleeBuffer);
+
+        // BEGIN ACTUATION
+
         Action action = prioritySet.fairAct(rc, rand);                    // act!
 
         // DECAY PRIORITY
@@ -78,6 +80,15 @@ public class Archon extends MovableUnit {
     }
     catch (GameActionException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void checkRubble(Map<Direction, Double> fleeBuffer, MapLocation curLoc) {
+    for(Direction dir : fleeBuffer.keySet()) {
+      MapLocation locOfFlee = curLoc.add(dir);
+      double rubble = rc.senseRubble(locOfFlee);
+      double weight = Rubble.weight(RUBBLE_MAP, rubble);
+      fleeBuffer.put(dir, fleeBuffer.get(dir) / weight);
     }
   }
 
@@ -120,7 +131,7 @@ public class Archon extends MovableUnit {
     if(rc.getTeamParts() > SOLDIER.partCost) {
       for(Direction dir : Directions.cardinals()) {
         if(rc.canBuild(dir, SOLDIER)) {
-          prioritySet.putPriority(BuildAction.getInstance(SOLDIER, dir), Priority.LEVEL2_PRIORITY);
+          prioritySet.putPriority(BuildAction.getInstance(SOLDIER, dir), Priority.DEFAULT_PRIORITY);
         }
       }
     }
@@ -139,7 +150,7 @@ public class Archon extends MovableUnit {
         adjacentNeutral = true;
       } else {
         action = MoveAction.inDirection(dirToLoc);
-        priority = Priority.DEFAULT_PRIORITY;
+        priority = Priority.LOWEST_PRIORITY;
       }
       prioritySet.addPriority(action, priority);
     }

@@ -4,6 +4,7 @@ import battlecode.common.*;
 import team137.ai.actions.MoveAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.tables.Bounds;
+import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
 import team137.collect.PrioritySet;
 

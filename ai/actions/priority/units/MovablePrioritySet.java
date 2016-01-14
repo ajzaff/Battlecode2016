@@ -7,12 +7,9 @@ import team137.ai.tables.Directions;
 
 public class MovablePrioritySet extends BasePrioritySet {
   public MovablePrioritySet() {
-    init();
   }
+
   protected void init() {
-    for(Direction dir : Directions.cardinals()) {
-      putPriority(MoveAction.inDirection(dir), Priority.LOWEST_PRIORITY);
-    }
   }
 
   public void clearMotion() {

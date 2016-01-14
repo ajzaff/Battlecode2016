@@ -25,8 +25,4 @@ public final class Rubble {
     rubbleMap[Type.RUBBLE_SEVERE.ordinal()] = severe;
     return rubbleMap;
   }
-
-  public static double[] defaultMap() {
-    return map(1, .5, 0);
-  }
 }

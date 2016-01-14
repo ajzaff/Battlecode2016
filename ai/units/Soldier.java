@@ -7,6 +7,7 @@ import team137.ai.actions.ClearAction;
 import team137.ai.actions.MoveAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.SoldierPrioritySet;
+import team137.ai.tables.Directions;
 import team137.ai.tables.robots.FleeWeights;
 import team137.ai.tables.robots.RobotWeights;
 
@@ -59,25 +60,32 @@ public class Soldier extends MovableUnit {
       checkAttack(attackLoc, curLoc);
 
       RobotInfo[] localFriends = rc.senseNearbyRobots(2, team);
-//      if(localFriends.length > 3) {
-//        StringBuilder sb = new StringBuilder();
-//        for(Direction dir : Directions.fairCardinals(rand)) {
-//          prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
-//          sb.append(dir);
-//          sb.append(' ');
-//        }
-//        rc.setIndicatorString(2, sb.toString());
-//      }
+      if(localFriends.length > 3) {
+        StringBuilder sb = new StringBuilder();
+        for(Direction dir : Directions.fairCardinals(rand)) {
+          prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
+          sb.append(dir);
+          sb.append(' ');
+        }
+        rc.setIndicatorString(2, sb.toString());
+      }
       if(rc.isCoreReady() && rc.isWeaponReady()) {
         Action action = prioritySet.fairAct(rc, rand);
-        if(action instanceof AttackAction) {
-          prioritySet.putPriority(action, Priority.FORBID_PRIORITY);
-        }
-//        prioritySet.update();
+        decay(action);
       }
+
     }
     catch (GameActionException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void decay(Action action) {
+    if(action instanceof MoveAction) {
+      prioritySet.putPriority(action, Priority.FORBID_PRIORITY);
+    }
+    else if(action instanceof AttackAction) {
+      prioritySet.putPriority(action, Priority.FORBID_PRIORITY);
     }
   }
 
