@@ -17,15 +17,18 @@ public final class AttackUnits {
   {
     double bestScore = 0;
     MapLocation bestLoc = null;
-    for(RobotInfo r : robots) {
-
-      if(r.team != team && r.team != Team.NEUTRAL) {
+    for(RobotInfo r : robots)
+    {
+      if(r.team != team && r.team != Team.NEUTRAL)
+      {
         double dist = curLoc.distanceSquaredTo(r.location);
         double priority = attackTable.get(r.type) * baseAggro.value;
-        double weakness = 1;//r.maxHealth - r.health;
-        if(dist > 0) {
+        double weakness = r.maxHealth - r.health;
+        if(dist > 0)
+        {
           double score = (priority * weakness) / dist;
-          if(score > bestScore || bestLoc == null) {
+          if(score > bestScore || bestLoc == null)
+          {
             bestLoc = r.location;
             bestScore = score;
           }

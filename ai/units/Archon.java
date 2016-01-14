@@ -73,7 +73,7 @@ public class Archon extends MovableUnit {
 
         // DECAY PRIORITIES
 
-        prioritySet.update();                             // update priority map
+//        prioritySet.update();                             // update priority map
       }
     }
     catch (GameActionException e) {
