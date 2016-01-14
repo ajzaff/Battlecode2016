@@ -65,7 +65,7 @@ public class Archon extends MovableUnit {
 
         checkLocals(curLoc, localRobots, fleeBuffer);
 
-        checkRubble(fleeBuffer, curLoc);
+//        checkRubble(fleeBuffer, curLoc);
 
         applyFleeBuffer(fleeBuffer);
 

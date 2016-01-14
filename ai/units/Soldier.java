@@ -54,24 +54,27 @@ public class Soldier extends MovableUnit {
 
     try {
 
-      rc.setIndicatorString(0, prioritySet.toString());
-      rc.setIndicatorString(1, "" + attackLoc);
+      if(rc.isCoreReady() || rc.isWeaponReady()) {
 
-      checkAttack(attackLoc, curLoc);
+        rc.setIndicatorString(0, prioritySet.toString());
+        rc.setIndicatorString(1, "" + attackLoc);
 
-      RobotInfo[] localFriends = rc.senseNearbyRobots(2, team);
-      if(localFriends.length > 3) {
-        StringBuilder sb = new StringBuilder();
-        for(Direction dir : Directions.fairCardinals(rand)) {
-          prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
-          sb.append(dir);
-          sb.append(' ');
+        checkAttack(attackLoc, curLoc);
+
+        RobotInfo[] localFriends = rc.senseNearbyRobots(2, team);
+        if (localFriends.length > 3) {
+          StringBuilder sb = new StringBuilder();
+          for (Direction dir : Directions.fairCardinals(rand)) {
+            prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
+            sb.append(dir);
+            sb.append(' ');
+          }
+          rc.setIndicatorString(2, sb.toString());
         }
-        rc.setIndicatorString(2, sb.toString());
-      }
-      if(rc.isCoreReady() && rc.isWeaponReady()) {
-        Action action = prioritySet.fairAct(rc, rand);
-        decay(action);
+        if (rc.isCoreReady() && rc.isWeaponReady()) {
+          Action action = prioritySet.fairAct(rc, rand);
+          decay(action);
+        }
       }
 
     }
