@@ -11,6 +11,8 @@ import team137.ai.tables.Directions;
 import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static battlecode.common.RobotType.*;
@@ -48,6 +50,7 @@ public class Archon extends MovableUnit {
     // TURN VARIABLES
 
     MapLocation curLoc = rc.getLocation();
+    Map<Direction, Double> fleeBuffer = new HashMap<>(8);
 
     // START TURN
 
@@ -57,7 +60,9 @@ public class Archon extends MovableUnit {
 
       RobotInfo[] localRobots = rc.senseNearbyRobots();
 
-      checkLocals(curLoc, localRobots);
+      checkLocals(curLoc, localRobots, fleeBuffer);
+
+      applyFleeBuffer(fleeBuffer);
 
       // BEGIN ACTUATION
 
@@ -76,10 +81,30 @@ public class Archon extends MovableUnit {
     }
   }
 
-  private void checkLocals(MapLocation curLoc, RobotInfo[] localRobots) throws GameActionException {
+  private void applyFleeBuffer(Map<Direction, Double> fleeBuffer) {
+    for(Direction dir : fleeBuffer.keySet()) {
+      prioritySet.addPriorityButPermit(
+          MoveAction.inDirection(dir),
+          fleeBuffer.get(dir)
+      );
+    }
+  }
+
+  private void checkLocals(
+      MapLocation curLoc,
+      RobotInfo[] localRobots,
+      Map<Direction, Double> fleeBuffer)
+      throws GameActionException
+  {
     for(RobotInfo robotInfo : localRobots) {
       checkNeutrals(curLoc, robotInfo);
-      checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo, Priority.DEFAULT_PRIORITY);
+      checkFlee(
+          prioritySet,
+          FLEE_TABLE,
+          curLoc,
+          robotInfo,
+          Priority.DEFAULT_PRIORITY,
+          fleeBuffer);
     }
   }
 
