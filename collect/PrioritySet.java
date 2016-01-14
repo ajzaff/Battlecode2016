@@ -133,8 +133,8 @@ public class PrioritySet implements Iterable<Action> {
         getMinimalSet().add(action);
       }
     }
-    else {
-      if(indexEntry != null) { /* forbidden */
+    else { /* forbidden */
+      if(indexEntry != null) {
         getPriorityIndex().remove(action);
         getPrioritySet().remove(indexEntry);
       }

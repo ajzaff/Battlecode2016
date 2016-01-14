@@ -62,6 +62,9 @@ public class Guard extends MovableUnit {
           prioritySet.putPriority(MoveAction.inDirection(dirToLoc), Priority.DEFAULT_PRIORITY);
         }
       }
+      else {
+        prioritySet.forbidAttack();
+      }
       RobotInfo[] localFriends = rc.senseNearbyRobots(2, team);
       if(localFriends.length > 3) {
         for(Direction dir : Directions.fairCardinals(rand)) {

@@ -22,6 +22,11 @@ public class AttackAction extends BaseAction {
     return false;
   }
 
+  @Override
+  public int hashCode() {
+    return loc.hashCode();
+  }
+
   public static AttackAction target(MapLocation loc) {
     return new AttackAction(loc);
   }
