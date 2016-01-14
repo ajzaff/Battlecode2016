@@ -75,8 +75,7 @@ public class PrioritySet implements Iterable<Action> {
     @Override
     public int compareTo(Entry o) {
       int cmp = getValue().compareTo(o.getValue());
-      return cmp != 0? cmp : hashCode() < o.hashCode()? 1 :
-          hashCode() > o.hashCode()? -1 : 0;
+      return cmp != 0? cmp : 0;
     }
     @Override
     public String toString() {

@@ -70,6 +70,8 @@ public class Archon extends MovableUnit {
         checkEnemy(prioritySet, FLEE_TABLE, curLoc, robotInfo, Priority.DEFAULT_PRIORITY);
       }
 
+      checkLocals(curLoc, localRobots);
+
       // BEGIN ACTUATION
 
       rc.setIndicatorString(0, prioritySet.toString(7));  // debug
@@ -93,8 +95,12 @@ public class Archon extends MovableUnit {
     }
   }
 
+  private void checkLocals(MapLocation curLoc, RobotInfo[] localRobots) {
+
+  }
+
   private void checkBuild(MapLocation curLoc) throws GameActionException {
-    if(rc.getTeamParts() > 100) {
+    if(rc.getTeamParts() > SOLDIER.partCost) {
       for(Direction dir : Directions.cardinals()) {
         if(rc.canBuild(dir, SOLDIER)) {
           prioritySet.putPriority(BuildAction.getInstance(SOLDIER, dir), Priority.LEVEL2_PRIORITY);
