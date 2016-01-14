@@ -143,7 +143,11 @@ public class PrioritySet implements Iterable<Action> {
   }
 
   public void putPriorityButPermit(Action action, Priority priority) {
-    putPriority(action, Math.max(priority.value, Priority.LOWEST_PRIORITY.value));
+    putPriorityButPermit(action, priority.value);
+  }
+
+  public void putPriorityButPermit(Action action, double priority) {
+    putPriority(action, Math.max(priority, Priority.LOWEST_PRIORITY.value));
   }
 
   public void putPriority(Action action, Priority priority) {

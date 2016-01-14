@@ -69,15 +69,24 @@ public class Archon extends MovableUnit {
       rc.setIndicatorString(0, prioritySet.toString(7));  // debug
 
       if(rc.isCoreReady()) {
-        prioritySet.fairAct(rc, rand);                    // act!
+        Action action = prioritySet.fairAct(rc, rand);                    // act!
 
-        // DECAY PRIORITIES
+        // DECAY PRIORITY
 
-//        prioritySet.update();                             // update priority map
+        decay(action);
       }
     }
     catch (GameActionException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void decay(Action action) {
+    if(action instanceof MoveAction) {
+      prioritySet.putPriority(action, Priority.FORBID_PRIORITY);
+    }
+    else if(action instanceof ActivateAction) {
+      prioritySet.putPriority(action, Priority.FORBID_PRIORITY);
     }
   }
 
