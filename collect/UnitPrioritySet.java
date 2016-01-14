@@ -47,7 +47,7 @@ public class UnitPrioritySet extends PrioritySet {
         // calculate new priority "decay" for fairness
         // return the chosen action.
 
-        putIfLower(action, Priority.decay(getPriority(action)));
+        putIfLower(action, /*Priority.decay(getPriority(action))*/Priority.FORBID_PRIORITY);
         return action;
       }
     }

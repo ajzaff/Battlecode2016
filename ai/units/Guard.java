@@ -20,6 +20,11 @@ public class Guard extends MovableUnit {
   private static final FleeWeights FLEE_TABLE = FleeWeights.newInstance();
   private static final RobotWeights ATTACK_TABLE = RobotWeights.uniformWeights();
 
+  static {
+    ATTACK_TABLE.put(ZOMBIEDEN, Priority.LEVEL8_PRIORITY.value);
+    ATTACK_TABLE.put(BIGZOMBIE, Priority.LEVEL2_PRIORITY.value);
+  }
+
   private final GuardPrioritySet prioritySet;
   private final Random rand;
   private final Team team;

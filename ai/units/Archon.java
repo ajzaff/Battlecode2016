@@ -13,9 +13,7 @@ import team137.ai.tables.robots.FleeWeights;
 
 import java.util.Random;
 
-import static battlecode.common.RobotType.ARCHON;
-import static battlecode.common.RobotType.GUARD;
-import static battlecode.common.RobotType.ZOMBIEDEN;
+import static battlecode.common.RobotType.*;
 
 public class Archon extends MovableUnit {
 
@@ -62,7 +60,7 @@ public class Archon extends MovableUnit {
 
       checkBuild(curLoc);
 
-      avoidWalls(prioritySet, curLoc, SENSOR_RADIUS);
+//      avoidWalls(prioritySet, curLoc, SENSOR_RADIUS);
 
       RobotInfo[] localRobots = rc.senseNearbyRobots();
 
@@ -98,8 +96,8 @@ public class Archon extends MovableUnit {
   private void checkBuild(MapLocation curLoc) throws GameActionException {
     if(rc.getTeamParts() > 100) {
       for(Direction dir : Directions.cardinals()) {
-        if(rc.canBuild(dir, GUARD)) {
-          prioritySet.putPriority(BuildAction.getInstance(GUARD, dir), Priority.LEVEL2_PRIORITY);
+        if(rc.canBuild(dir, SOLDIER)) {
+          prioritySet.putPriority(BuildAction.getInstance(SOLDIER, dir), Priority.LEVEL2_PRIORITY);
         }
       }
     }
