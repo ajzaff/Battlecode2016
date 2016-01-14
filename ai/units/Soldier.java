@@ -1,19 +1,18 @@
 package team137.ai.units;
 
-import static battlecode.common.RobotType.*;
-
 import battlecode.common.*;
 import team137.ai.actions.Action;
 import team137.ai.actions.AttackAction;
-import team137.ai.actions.MoveAction;
 import team137.ai.actions.ClearAction;
+import team137.ai.actions.MoveAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.SoldierPrioritySet;
-import team137.ai.tables.Directions;
 import team137.ai.tables.robots.FleeWeights;
 import team137.ai.tables.robots.RobotWeights;
 
 import java.util.Random;
+
+import static battlecode.common.RobotType.*;
 
 public class Soldier extends MovableUnit {
 

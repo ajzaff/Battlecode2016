@@ -4,7 +4,6 @@ import battlecode.common.Direction;
 import team137.collect.iter.RandomIterator;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Random;
 
 public final class Directions {

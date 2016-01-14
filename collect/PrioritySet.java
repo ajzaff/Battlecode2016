@@ -1,11 +1,9 @@
 package team137.collect;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import team137.ai.actions.Action;
 import team137.ai.actions.priority.Priority;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class PrioritySet implements Iterable<Action> {
 
