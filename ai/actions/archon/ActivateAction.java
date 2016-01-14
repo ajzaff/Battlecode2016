@@ -1,9 +1,6 @@
 package team137.ai.actions.archon;
 
-import battlecode.common.Direction;
-import battlecode.common.GameActionException;
-import battlecode.common.MapLocation;
-import battlecode.common.RobotController;
+import battlecode.common.*;
 import team137.ai.actions.BaseAction;
 
 import java.util.HashMap;
@@ -35,8 +32,13 @@ public class ActivateAction extends BaseAction {
   @Override
   public boolean act(RobotController rc) throws GameActionException {
     MapLocation loc = rc.getLocation().add(dir);
-    rc.activate(loc);
-    return true;
+    RobotInfo robot = rc.senseRobotAtLocation(loc);
+
+    if(robot != null && robot.team == Team.NEUTRAL) {
+      rc.activate(loc);
+      return true;
+    }
+    return false;
   }
 
   public static ActivateAction fromDirection(Direction dir) {
