@@ -101,7 +101,22 @@ public class Soldier extends MovableUnit {
       prioritySet.putPriority(AttackAction.target(attackLoc), Priority.LEVEL4_PRIORITY);
     }
     else {
-      Direction dirToLoc = curLoc.directionTo(attackLoc);
+
+      Signal signal;
+      while ((signal = rc.readSignal()) != null) {
+        if (signal.getTeam() == team) {
+          break;
+        }
+      }
+
+      Direction dirToLoc;
+
+      if (signal != null && signal.getTeam() == team) {
+        MapLocation loc = signal.getLocation();
+        dirToLoc = curLoc.directionTo(loc);
+      } else {
+        dirToLoc = curLoc.directionTo(attackLoc);
+      }
       prioritySet.putPriority(ClearAction.inDirection(dirToLoc), Priority.DEFAULT_PRIORITY);
       prioritySet.putPriority(MoveAction.inDirection(dirToLoc), Priority.DEFAULT_PRIORITY);
       prioritySet.putPriority(AttackAction.target(attackLoc), Priority.FORBID_PRIORITY);

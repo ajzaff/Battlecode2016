@@ -8,7 +8,6 @@ import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
 import team137.ai.actions.priority.units.ArchonPrioritySet;
 import team137.ai.tables.Directions;
-import team137.ai.tables.Rubble;
 import team137.ai.tables.robots.FleeWeights;
 
 import java.util.HashMap;
@@ -29,9 +28,10 @@ public class Archon extends MovableUnit {
     FLEE_TABLE.put(ZOMBIEDEN, FleeWeights.Row.newInstance(-.5, -.05));
   }
 
-  private static final double[] RUBBLE_MAP = Rubble.map(1, .5, .125);
-  private static final int SENSOR_RADIUS =
-      (int) Math.sqrt(ARCHON.sensorRadiusSquared);
+//  private static final double[] RUBBLE_MAP = Rubble.map(1, .5, .125);
+
+//  private static final int SENSOR_RADIUS =
+//      (int) Math.sqrt(ARCHON.sensorRadiusSquared);
 
   ///////////// ROBOT CONSTANT FIELDS
 
@@ -83,14 +83,14 @@ public class Archon extends MovableUnit {
     }
   }
 
-  private void checkRubble(Map<Direction, Double> fleeBuffer, MapLocation curLoc) {
-    for(Direction dir : fleeBuffer.keySet()) {
-      MapLocation locOfFlee = curLoc.add(dir);
-      double rubble = rc.senseRubble(locOfFlee);
-      double weight = Rubble.weight(RUBBLE_MAP, rubble);
-      fleeBuffer.put(dir, fleeBuffer.get(dir) / weight);
-    }
-  }
+//  private void checkRubble(Map<Direction, Double> fleeBuffer, MapLocation curLoc) {
+//    for(Direction dir : fleeBuffer.keySet()) {
+//      MapLocation locOfFlee = curLoc.add(dir);
+//      double rubble = rc.senseRubble(locOfFlee);
+//      double weight = Rubble.weight(RUBBLE_MAP, rubble);
+//      fleeBuffer.put(dir, fleeBuffer.get(dir) / weight);
+//    }
+//  }
 
   private void decay(Action action) {
     if(action instanceof MoveAction) {
@@ -124,6 +124,9 @@ public class Archon extends MovableUnit {
           robotInfo,
           Priority.DEFAULT_PRIORITY,
           fleeBuffer);
+    }
+    if(! fleeBuffer.isEmpty()) {
+      rc.broadcastMessageSignal(curLoc.x, curLoc.y, 80);
     }
   }
 
