@@ -3,6 +3,7 @@ package team137.ai.units;
 import battlecode.common.*;
 import team137.ai.actions.Action;
 import team137.ai.actions.BuildAction;
+import team137.ai.actions.MessageAction;
 import team137.ai.actions.MoveAction;
 import team137.ai.actions.archon.ActivateAction;
 import team137.ai.actions.priority.Priority;
@@ -126,6 +127,7 @@ public class Archon extends MovableUnit {
           fleeBuffer);
     }
     if(! fleeBuffer.isEmpty()) {
+      prioritySet.putIfHigher(MessageAction.newInstance(0, 0, ));
       rc.broadcastMessageSignal(curLoc.x, curLoc.y, 80);
     }
   }
