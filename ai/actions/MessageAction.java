@@ -1,18 +1,27 @@
 package team137.ai.actions;
 
-import java.util.Arrays;
+import battlecode.common.GameActionException;
+import battlecode.common.RobotController;
 
-public class MessageAction {
+public class MessageAction extends BaseAction {
 
-  private Integer hashCode;
+  private final int hashCode;
   public final int range;
   public final int n1;
   public final int n2;
 
   protected MessageAction(int n1, int n2, int range) {
+    super("(" + n1 + "," + n2 + "," + range + ")");
     this.n1 = n1;
     this.n2 = n2;
     this.range = range;
+    hashCode = 29791 + 961 * n1 + 31 * n2 + range;
+  }
+
+  @Override
+  public boolean act(RobotController rc) throws GameActionException {
+    rc.broadcastMessageSignal(n1, n2, range);
+    return true;
   }
 
   @Override
@@ -28,9 +37,6 @@ public class MessageAction {
 
   @Override
   public int hashCode() {
-    if(hashCode == null) {
-      hashCode = Arrays.hashCode(new int[] { n1, n2, range });
-    }
     return hashCode;
   }
 
