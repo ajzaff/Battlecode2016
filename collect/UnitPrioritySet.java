@@ -42,13 +42,15 @@ public class UnitPrioritySet extends PrioritySet {
     // course of action...
 
     for(Action action : this) {
-      if(action.act(rc)) {
+      if(action != null) {
+        if (action.act(rc)) {
 
-        // calculate new priority "decay" for fairness
-        // return the chosen action.
+          // calculate new priority "decay" for fairness
+          // return the chosen action.
 
 //        putIfLower(action, Priority.decay(getPriority(action)));
-        return action;
+          return action;
+        }
       }
     }
 

@@ -18,7 +18,7 @@ public class Scout extends MovableUnit {
   /// "SHARED"
 
   private static final int SCOUT_RADIUS = (int) Math.sqrt(SCOUT.sensorRadiusSquared);
-  private static final FleeWeights FLEE_WEIGHTS = FleeWeights.getDefault();
+  private static final FleeWeights FLEE_WEIGHTS = FleeWeights.newInstance();
 
   static {
     FLEE_WEIGHTS.put(ZOMBIEDEN, FleeWeights.Row.getNull());
@@ -52,9 +52,10 @@ public class Scout extends MovableUnit {
         if (dir == null) {
           senseWall(curLoc);
         }
-        else {
-          prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
-        }
+
+        // add scout motion!
+
+        prioritySet.putPriority(MoveAction.inDirection(dir), Priority.DEFAULT_PRIORITY);
 
         RobotInfo[] localRobots = rc.senseHostileRobots(curLoc, SCOUT.sensorRadiusSquared);
         Map<Direction, Double> fleeBuffer = new HashMap<>(8);
@@ -84,7 +85,7 @@ public class Scout extends MovableUnit {
   private void senseWall(MapLocation curLoc) throws GameActionException {
     Direction wallDir = null;
     for(Direction dir : Directions.cardinals()) {
-      MapLocation locFromCur = curLoc.add(dir, SCOUT_RADIUS);
+      MapLocation locFromCur = curLoc.add(dir, 4);
       if(! rc.onTheMap(locFromCur)) {
         wallDir = dir;
         break;
