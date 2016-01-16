@@ -68,33 +68,33 @@ public class MovableUnit extends BaseUnit {
       fleeBuffer.put(
           dirToLoc,
           fleeBuffer.getOrDefault(dirToLoc, 0d) +
-              x0 * basePriority.value);
+              x0 * basePriority);
       // left spill
       Direction rl = dirToLoc.rotateLeft();
       fleeBuffer.put(rl,
           fleeBuffer.getOrDefault(rl, 0d) +
-              x1 * basePriority.value);
+              x1 * basePriority);
       // right spill
       Direction rr = dirToLoc.rotateLeft();
       fleeBuffer.put(rr,
           fleeBuffer.getOrDefault(rr, 0d) +
-              x1 * basePriority.value);
+              x1 * basePriority);
 
       // backward
       Direction backward = dirToLoc.opposite();
       fleeBuffer.put(backward,
           fleeBuffer.getOrDefault(backward, 0d) +
-              -x0 * basePriority.value);
+              -x0 * basePriority);
       // backward left spill
       Direction brl = backward.rotateLeft();
       fleeBuffer.put(brl,
           fleeBuffer.getOrDefault(brl, 0d) +
-              -x1 * basePriority.value);
+              -x1 * basePriority);
       // backward right spill
       Direction brr = backward.rotateRight();
       fleeBuffer.put(brr,
           fleeBuffer.getOrDefault(brr, 0d) +
-              -x1 * basePriority.value);
+              -x1 * basePriority);
     }
   }
 

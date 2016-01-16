@@ -65,7 +65,7 @@ public class Scout extends MovableUnit {
               FLEE_WEIGHTS,
               curLoc,
               robot,
-              ,
+              .1,
               fleeBuffer
           );
         }

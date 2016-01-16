@@ -115,17 +115,19 @@ public class Archon extends MovableUnit {
           fleeBuffer);
     }
     if(! fleeBuffer.isEmpty()) {
-      prioritySet.putIfHigher(SignalAction.newInstance(80), Priority.DEFAULT_PRIORITY);
+      prioritySet.putIfHigher(
+          SignalAction.newInstance(80),
+          Priority.DEFAULT_PRIORITY);
     }
   }
 
   private void checkBuild(MapLocation curLoc) throws GameActionException {
 
     double parts = rc.getTeamParts();
-    int flip = 1 + rand.nextInt(10);
+    int flip = 1 + rand.nextInt(100);
     RobotType buildType = null;
 
-    if (parts >= SOLDIER.partCost && flip < 10) {
+    if (parts >= SOLDIER.partCost && flip < 100) {
       buildType = SOLDIER;
     }
     else if(parts >= SCOUT.partCost) {
