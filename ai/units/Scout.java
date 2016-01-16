@@ -65,7 +65,7 @@ public class Scout extends MovableUnit {
               FLEE_WEIGHTS,
               curLoc,
               robot,
-              Priority.LEVEL4_PRIORITY,
+              Priority.LOWEST_PRIORITY,
               fleeBuffer
           );
         }
