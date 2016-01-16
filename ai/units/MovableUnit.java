@@ -43,6 +43,23 @@ public class MovableUnit extends BaseUnit {
       Map<Direction, Double> fleeBuffer)
       throws GameActionException
   {
+    checkFlee(
+        fleeWeights,
+        curLoc,
+        robotInfo,
+        basePriority.value,
+        fleeBuffer
+    );
+  }
+
+  public void checkFlee(
+      FleeWeights fleeWeights,
+      MapLocation curLoc,
+      RobotInfo robotInfo,
+      double basePriority,
+      Map<Direction, Double> fleeBuffer)
+      throws GameActionException
+  {
     if(robotInfo.team == Team.ZOMBIE || robotInfo.team.opponent() == team) {
       Direction dirToLoc = curLoc.directionTo(robotInfo.location);
       double x0 = fleeWeights.get(robotInfo.type).x0;
