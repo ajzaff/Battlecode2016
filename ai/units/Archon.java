@@ -65,7 +65,7 @@ public class Archon extends MovableUnit {
 
 //        checkRubble(fleeBuffer, curLoc);
 
-        applyFleeBuffer(fleeBuffer);
+        applyFleeBuffer(fleeBuffer, prioritySet);
 
         // BEGIN ACTUATION
 
@@ -99,15 +99,6 @@ public class Archon extends MovableUnit {
     }
   }
 
-  private void applyFleeBuffer(Map<Direction, Double> fleeBuffer) {
-    for(Direction dir : fleeBuffer.keySet()) {
-      prioritySet.addPriorityButPermit(
-          MoveAction.inDirection(dir),
-          fleeBuffer.get(dir)
-      );
-    }
-  }
-
   private void checkLocals(
       MapLocation curLoc,
       RobotInfo[] localRobots,
@@ -129,10 +120,23 @@ public class Archon extends MovableUnit {
   }
 
   private void checkBuild(MapLocation curLoc) throws GameActionException {
-    if(rc.getTeamParts() > SOLDIER.partCost) {
+
+    double parts = rc.getTeamParts();
+    int flip = 1 + rand.nextInt(10);
+    RobotType buildType = null;
+
+    if (parts >= SOLDIER.partCost && flip < 10) {
+      buildType = SOLDIER;
+    }
+    else if(parts >= SCOUT.partCost) {
+      buildType = SCOUT;
+    }
+
+    if(buildType != null) {
       for(Direction dir : Directions.cardinals()) {
-        if(rc.canBuild(dir, SOLDIER)) {
-          prioritySet.putPriority(BuildAction.getInstance(SOLDIER, dir), Priority.DEFAULT_PRIORITY);
+        if(rc.canBuild(dir, buildType)) {
+          prioritySet.putPriority(BuildAction.getInstance(buildType, dir), Priority.DEFAULT_PRIORITY);
+          break;
         }
       }
     }

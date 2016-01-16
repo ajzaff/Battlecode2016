@@ -80,4 +80,13 @@ public class MovableUnit extends BaseUnit {
               -x1 * basePriority.value);
     }
   }
+
+  public void applyFleeBuffer(Map<Direction, Double> fleeBuffer, PrioritySet prioritySet) {
+    for(Direction dir : fleeBuffer.keySet()) {
+      prioritySet.addPriorityButPermit(
+          MoveAction.inDirection(dir),
+          fleeBuffer.get(dir)
+      );
+    }
+  }
 }
